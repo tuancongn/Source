@@ -4,6 +4,7 @@
     "input_placeholder": "Nhập tin nhắn...",
     "live_support_msg": "Cảm ơn bạn. Đội ngũ Support đã nhận được yêu cầu. Chúng tôi sẽ phản hồi trong ít phút.",
     "menu_btn": "🔄 Quay lại menu chính",
+    "status": "Trực tuyến • Phản hồi ngay",
     "options": [
       {
         "id": "withdraw",
@@ -37,6 +38,7 @@
     "input_placeholder": "Type a message...",
     "live_support_msg": "Thank you. Our Support team has received your request. We will respond shortly.",
     "menu_btn": "🔄 Back to Main Menu",
+    "status": "Online • Reply instantly",
     "options": [
       {
         "id": "withdraw",
@@ -65,4 +67,5 @@
       }
     ]
   }
+
 }
