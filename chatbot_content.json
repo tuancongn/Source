@@ -1,0 +1,68 @@
+{
+  "vi": {
+    "welcome": "Xin chào! Tôi là trợ lý AI của Holdstation. Tôi có thể giúp gì cho giao dịch của bạn hôm nay?",
+    "input_placeholder": "Nhập tin nhắn...",
+    "live_support_msg": "Cảm ơn bạn. Đội ngũ Support đã nhận được yêu cầu. Chúng tôi sẽ phản hồi trong ít phút.",
+    "menu_btn": "🔄 Quay lại menu chính",
+    "options": [
+      {
+        "id": "withdraw",
+        "text": "💸 Tại sao tôi không rút được tiền?",
+        "answer": "Để rút tiền, vui lòng đảm bảo bạn đã đóng hết các vị thế (Positions) và ví có đủ ETH để làm phí gas mạng zkSync. Thời gian xử lý trung bình là 1-5 phút."
+      },
+      {
+        "id": "liquidate",
+        "text": "📉 Tại sao lệnh tôi bị thanh lý?",
+        "answer": "Lệnh bị thanh lý khi Margin Ratio giảm xuống dưới mức bảo trì (thường là 80-100% tùy cặp). Với thị trường biến động mạnh, hãy luôn cài đặt Stoploss!"
+      },
+      {
+        "id": "fee",
+        "text": "⛽ Phí giao dịch tính thế nào?",
+        "answer": "Holdstation áp dụng mức phí thấp nhất zkSync: 0.05% cho mở/đóng lệnh. Phí Funding được tính mỗi giờ dựa trên chênh lệch Long/Short."
+      },
+      {
+        "id": "newbie",
+        "text": "🚀 Hướng dẫn trade cho người mới",
+        "answer": "Bắt đầu đơn giản: 1. Nạp ETH/USDC -> 2. Chọn cặp tiền -> 3. Chọn đòn bẩy -> 4. Long/Short. <a href='https://docs.holdstation.com' target='_blank' style='color:#00E3A5'>Xem Docs tại đây</a>."
+      },
+      {
+        "id": "support",
+        "text": "💬 Gặp hỗ trợ viên (Live Support)",
+        "answer": "Đội ngũ Support đang trực tuyến. Vui lòng mô tả chi tiết vấn đề của bạn."
+      }
+    ]
+  },
+  "en": {
+    "welcome": "Hello! I am Holdstation AI Assistant. How can I help you with your trading today?",
+    "input_placeholder": "Type a message...",
+    "live_support_msg": "Thank you. Our Support team has received your request. We will respond shortly.",
+    "menu_btn": "🔄 Back to Main Menu",
+    "options": [
+      {
+        "id": "withdraw",
+        "text": "💸 Why can't I withdraw?",
+        "answer": "To withdraw, ensure all Positions are closed and you have enough ETH for zkSync gas fees. Average processing time is 1-5 minutes."
+      },
+      {
+        "id": "liquidate",
+        "text": "📉 Why was I liquidated?",
+        "answer": "Liquidation occurs when Margin Ratio drops below maintenance level (80-100%). In volatile markets, always set a Stoploss!"
+      },
+      {
+        "id": "fee",
+        "text": "⛽ Trading Fees structure?",
+        "answer": "Holdstation offers the lowest fees on zkSync: 0.05% for open/close. Funding fees are calculated hourly based on Long/Short skew."
+      },
+      {
+        "id": "newbie",
+        "text": "🚀 Guide for New Traders",
+        "answer": "Simple steps: 1. Deposit ETH/USDC -> 2. Select Pair -> 3. Leverage -> 4. Long/Short. <a href='https://docs.holdstation.com' target='_blank' style='color:#00E3A5'>Read Docs</a>."
+      },
+      {
+        "id": "support",
+        "text": "💬 Live Support",
+        "answer": "Support team is online. Please describe your issue in detail."
+      }
+    ]
+  }
+}
