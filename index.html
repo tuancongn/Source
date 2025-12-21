@@ -83,22 +83,41 @@
             background: rgba(20, 20, 30, 0.8);
         }
 
-        /* Scanner Beam */
-        .scanner-beam {
-            background: linear-gradient(to bottom, transparent, rgba(147, 51, 234, 0.2), rgba(147, 51, 234, 0.5), transparent);
-            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
-        }
-
-        /* Toggle Switch */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #9333ea;
-        }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #9333ea;
+        /* Toggle Switch CSS - Fixed Slide Effect */
+        .toggle-checkbox {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background: #374151;
+            border-radius: 999px;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            transition: background 0.3s;
         }
         
-        /* Custom Scrollbar for Textarea */
+        .toggle-checkbox::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .toggle-checkbox:checked {
+            background: #9333ea;
+        }
+
+        .toggle-checkbox:checked::after {
+            transform: translateX(20px);
+        }
+
+        /* Custom Scrollbar */
         textarea::-webkit-scrollbar { width: 6px; }
         textarea::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         textarea::-webkit-scrollbar-thumb:hover { background: #555; }
@@ -108,8 +127,6 @@
 
     <!-- Background Effects -->
     <div class="fixed inset-0 bg-grid-animated opacity-30 pointer-events-none z-0"></div>
-    
-    <!-- Floating Orbs -->
     <div class="fixed top-10 left-[10%] w-64 h-64 bg-hs-primary opacity-[0.08] rounded-full blur-[80px] animate-float pointer-events-none"></div>
     <div class="fixed bottom-10 right-[10%] w-80 h-80 bg-blue-600 opacity-[0.08] rounded-full blur-[100px] animate-float pointer-events-none" style="animation-delay: 2s;"></div>
 
@@ -124,7 +141,6 @@
                 
                 <div class="hidden sm:block h-5 w-px bg-gray-800"></div>
                 
-                <!-- Status Badge -->
                 <div id="status-indicator" class="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-900/60 border border-gray-800 text-xs text-gray-400 backdrop-blur-sm">
                     <span class="relative flex h-2 w-2">
                       <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
@@ -134,14 +150,11 @@
                 </div>
             </div>
 
-            <!-- Language Switcher -->
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-gray-500 cursor-pointer" onclick="setLang('en')">EN</span>
-                <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="toggle" id="lang-toggle" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0" style="top: 2px; left: 2px;"/>
-                    <label for="lang-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-700 cursor-pointer"></label>
-                </div>
-                <span class="text-xs font-bold text-gray-300 cursor-pointer" onclick="setLang('vi')">VN</span>
+            <!-- Language Switcher - FIXED UI -->
+            <div class="flex items-center gap-3 select-none">
+                <span class="text-xs font-bold text-gray-400 cursor-pointer" onclick="forceLang('en')">EN</span>
+                <input type="checkbox" id="lang-toggle" class="toggle-checkbox">
+                <span class="text-xs font-bold text-gray-400 cursor-pointer" onclick="forceLang('vi')">VN</span>
             </div>
         </div>
     </header>
@@ -150,10 +163,9 @@
     <main class="flex-grow p-4 md:p-8 flex items-center justify-center relative z-10">
         <div class="max-w-4xl w-full mx-auto space-y-6">
             
-            <!-- Main Card -->
             <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl relative group border-t border-gray-700/50">
                 <!-- Scanner Beam -->
-                <div id="scanner" class="scanner-beam absolute w-full h-2 top-0 left-0 hidden shadow-[0_0_20px_#9333ea] z-20"></div>
+                <div id="scanner" class="absolute w-full h-2 top-0 left-0 hidden shadow-[0_0_20px_#9333ea] z-20 bg-hs-primary/50"></div>
                 
                 <!-- Progress Bar -->
                 <div id="progress-container" class="hidden absolute top-0 left-0 w-full h-[2px] bg-gray-800 z-30">
@@ -162,7 +174,6 @@
 
                 <div class="p-6 md:p-8 relative z-10">
                     
-                    <!-- Top Section -->
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                         <div class="relative">
                             <h1 class="text-3xl font-bold text-white mb-2 tracking-tight flex items-center gap-2" data-key="title">
@@ -176,7 +187,6 @@
                             <span class="relative z-10 flex items-center justify-center gap-2" id="btn-text" data-key="startBtn">
                                 <i class="fa-solid fa-radar"></i> Start Diagnostic
                             </span>
-                            <!-- Button Shine Effect -->
                             <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
                         </button>
                     </div>
@@ -190,7 +200,7 @@
                                 <i class="fa-solid fa-bolt text-gray-600 group-hover/card:text-yellow-400 transition-colors"></i>
                             </div>
                             <div id="display-ping" class="text-3xl font-bold text-gray-700 font-mono tracking-tight">--</div>
-                            <div class="text-[10px] text-gray-500 mt-1 truncate opacity-70">Direct connection</div>
+                            <div id="text-ping" class="text-[10px] text-gray-500 mt-1 truncate opacity-70">Direct connection</div>
                         </div>
 
                         <!-- Stat 2: IP -->
@@ -224,10 +234,8 @@
                         </div>
                     </div>
 
-                    <!-- Dynamic Advice Box -->
                     <div id="advice-area" class="hidden opacity-0 transform translate-y-4 transition-all duration-500 mb-6"></div>
 
-                    <!-- Support Section -->
                     <div class="border-t border-gray-800/60 pt-6">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
                             <div class="flex items-center gap-2 text-hs-primary">
@@ -260,10 +268,14 @@
 
     <script>
         // --- DATA & CONFIG ---
+        // SỬ DỤNG CACHE BUSTER ĐỂ FIX LỖI IP BỊ CACHE
+        const getCacheBuster = () => `?t=${Date.now()}`;
+        
         const TARGETS = {
             MAIN: 'https://holdstation.exchange/favicon.ico', 
             BACKUP: 'https://www.google.com/favicon.ico',
-            IP_API: 'https://api.db-ip.com/v2/free/self'
+            IP_API_1: 'https://api.db-ip.com/v2/free/self',
+            IP_API_2: 'https://api.ipify.org?format=json'
         };
 
         const LANG = {
@@ -287,12 +299,13 @@
                 complete: "Hoàn tất",
                 status_good: "Kết nối Tuyệt vời",
                 status_fair: "Kết nối Ổn định",
-                status_bad: "Mạng Chậm",
+                status_bad: "Mạng Quá Chậm",
                 advice_offline: "Mất kết nối Internet",
                 advice_blocked: "Kết nối bị chặn (Firewall)",
                 advice_webgl: "Thiếu hỗ trợ WebGL",
                 advice_good: "Hệ thống tối ưu cho Trading",
-                advice_fair: "Mạng ổn định để giao dịch"
+                advice_fair: "Mạng ổn định để giao dịch",
+                advice_bad: "Ping quá cao! Không nên giao dịch"
             },
             en: {
                 title: "System Health Check",
@@ -314,12 +327,13 @@
                 complete: "Complete",
                 status_good: "Excellent Connection",
                 status_fair: "Stable Connection",
-                status_bad: "Slow Network",
+                status_bad: "High Latency Warning",
                 advice_offline: "No Internet Connection",
                 advice_blocked: "Connection Blocked (Firewall)",
                 advice_webgl: "WebGL Not Supported",
                 advice_good: "System Optimized for Trading",
-                advice_fair: "Connection Stable for Trading"
+                advice_fair: "Connection Stable for Trading",
+                advice_bad: "Lag detected! Trading risk is high"
             }
         };
 
@@ -332,10 +346,10 @@
         window.onload = async () => {
             // Auto-detect Language
             try {
-                const res = await fetch(TARGETS.IP_API);
+                // Thêm cache: no-store để không bị lưu IP cũ
+                const res = await fetch(TARGETS.IP_API_1 + getCacheBuster(), { cache: 'no-store' });
                 if(res.ok) {
                     const data = await res.json();
-                    // Nếu là IP Việt Nam -> Switch sang tiếng Việt
                     if(data.countryCode === 'VN' || data.countryName === 'Vietnam') {
                         setLang('vi');
                     }
@@ -346,12 +360,18 @@
         };
 
         // --- CORE FUNCTIONS ---
+        
+        function forceLang(lang) {
+             const toggle = document.getElementById('lang-toggle');
+             toggle.checked = (lang === 'vi');
+             setLang(lang);
+        }
 
         function setLang(lang) {
             currentLang = lang;
             const t = LANG[lang];
             
-            // Update Toggle UI
+            // Update Toggle UI Sync
             const toggle = document.getElementById('lang-toggle');
             toggle.checked = (lang === 'vi');
             
@@ -361,9 +381,8 @@
                 if(t[key]) el.innerHTML = t[key];
             });
 
-            // Update Dynamic Elements if they exist
+            // Update Dynamic Elements
             const btnScan = document.getElementById('btn-scan');
-            // Check if we are in "Retry" state or "Start" state
             if(!isScanning && document.getElementById('display-ping').innerText !== '--') {
                  btnScan.innerHTML = `<span class="relative z-10 flex items-center justify-center gap-2">${t.retryBtn}</span>`;
             } else if (!isScanning) {
@@ -373,13 +392,11 @@
             // Update Status Text
             const statusText = document.getElementById('status-text');
             if(statusText.innerText !== '...') {
-               // Simple mapping for current status
                if(statusText.getAttribute('data-state') === 'ready') statusText.innerText = t.ready;
                if(statusText.getAttribute('data-state') === 'complete') statusText.innerText = t.complete;
             }
         }
 
-        // Toggle Event Listener
         document.getElementById('lang-toggle').addEventListener('change', (e) => {
             setLang(e.target.checked ? 'vi' : 'en');
         });
@@ -395,9 +412,8 @@
             document.getElementById('progress-container').classList.remove('hidden');
             const scanner = document.getElementById('scanner');
             scanner.classList.remove('hidden');
-            scanner.style.animation = 'scan-down 2s ease-in-out infinite';
-
-            // Define keyframes for scanner manually in JS if CSS fails or for precise control
+            
+            // CSS Animation Fallback for JS
             const styleSheet = document.createElement("style");
             styleSheet.innerText = `
                 @keyframes scan-down {
@@ -408,12 +424,13 @@
                 }
             `;
             document.head.appendChild(styleSheet);
-            
+            scanner.style.animation = 'scan-down 2s ease-in-out infinite';
+
             updateStatus('scanning', t.scanning);
             
             // --- STEP 1: DEVICE (0-30%) ---
             setBar(10);
-            await delay(400);
+            await delay(300);
             
             // WebGL
             const canvas = document.createElement('canvas');
@@ -447,8 +464,10 @@
             pingEl.innerText = `${pingResult.ms}ms`;
             
             let pingClass = "text-hs-danger";
+            // Logic Ping: <150 Good, <500 Fair, >500 Bad
             if (pingResult.status === 'good') pingClass = "text-hs-success text-shadow-glow";
             else if (pingResult.status === 'fair') pingClass = "text-hs-warning";
+            else pingClass = "text-hs-danger animate-pulse"; // Hiệu ứng cảnh báo cho ping cao
             
             pingEl.className = `text-3xl font-bold font-mono ${pingClass}`;
             setBar(90);
@@ -478,8 +497,11 @@
         // --- HELPER LOGIC ---
 
         async function getIP() {
+            // FIX IP CACHE: Thêm query param random thời gian
+            const cacheBuster = getCacheBuster();
+            
             try {
-                const res = await fetch(TARGETS.IP_API);
+                const res = await fetch(TARGETS.IP_API_1 + cacheBuster, { cache: 'no-store' });
                 if(res.ok) {
                     const data = await res.json();
                     return { ip: data.ipAddress, isp: `${data.city}, ${data.countryCode}` };
@@ -488,7 +510,7 @@
             
             // Fallback
             try {
-                const res = await fetch('https://api.ipify.org?format=json');
+                const res = await fetch(TARGETS.IP_API_2 + "&" + cacheBuster.replace('?', ''), { cache: 'no-store' });
                 const data = await res.json();
                 return { ip: data.ip, isp: 'ISP Info Hidden' };
             } catch(e) {
@@ -503,9 +525,11 @@
             try {
                 await fetch(TARGETS.MAIN, { mode: 'no-cors', cache: 'no-store' });
                 ms = Math.round(performance.now() - start);
+                
+                // Logic đánh giá Ping chặt chẽ hơn
                 if (ms < 150) status = 'good';
                 else if (ms < 500) status = 'fair';
-                else status = 'bad';
+                else status = 'bad'; // Thêm trạng thái Bad cho ping cao
             } catch (e) {
                 try {
                     await fetch(TARGETS.BACKUP, { mode: 'no-cors', cache: 'no-store' });
@@ -523,28 +547,32 @@
             let html = '';
             let style = '';
 
-            // Map status to messages
+            // Map status to messages - Đã thêm logic cho BAD status
             if (pingStatus === 'offline') {
-                style = 'bg-red-500/10 border-red-500/30 text-red-200';
+                style = 'bg-red-900/20 border-red-500/30 text-red-200';
                 html = makeAdviceHtml('fa-plug', t.advice_offline, 'text-red-500');
             } else if (pingStatus === 'blocked') {
-                style = 'bg-orange-500/10 border-orange-500/30 text-orange-200';
+                style = 'bg-orange-900/20 border-orange-500/30 text-orange-200';
                 html = makeAdviceHtml('fa-shield-cat', t.advice_blocked, 'text-orange-500');
             } else if (!gl) {
-                style = 'bg-yellow-500/10 border-yellow-500/30 text-yellow-200';
+                style = 'bg-yellow-900/20 border-yellow-500/30 text-yellow-200';
                 html = makeAdviceHtml('fa-tv', t.advice_webgl, 'text-yellow-500');
             } else if (pingStatus === 'good') {
-                style = 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200';
+                style = 'bg-emerald-900/20 border-emerald-500/30 text-emerald-200';
                 html = makeAdviceHtml('fa-check-circle', t.advice_good, 'text-emerald-500');
+            } else if (pingStatus === 'bad') {
+                // Trường hợp mạng lag > 500ms
+                style = 'bg-red-900/20 border-red-500/50 text-red-200';
+                html = makeAdviceHtml('fa-triangle-exclamation', t.advice_bad, 'text-red-500');
             } else {
-                style = 'bg-blue-500/10 border-blue-500/30 text-blue-200';
+                // Fair: 150ms < ping < 500ms
+                style = 'bg-blue-900/20 border-blue-500/30 text-blue-200';
                 html = makeAdviceHtml('fa-wifi', t.advice_fair, 'text-blue-500');
             }
 
             box.innerHTML = html;
             box.className = `p-4 rounded-xl border ${style} backdrop-blur-md mb-6 animate-pulse-fast`;
             box.classList.remove('hidden', 'opacity-0', 'translate-y-4');
-            // Remove pulse after 2s
             setTimeout(() => box.classList.remove('animate-pulse-fast'), 2000);
         }
 
@@ -586,7 +614,6 @@
             const ping = document.getElementById('status-ping');
             const label = document.getElementById('status-text');
             
-            // Set internal state for lang switching
             label.setAttribute('data-state', state);
             label.innerText = text;
 
@@ -620,7 +647,6 @@
             document.execCommand('copy');
             const btn = document.getElementById('btn-copy');
             const t = LANG[currentLang];
-            const originalHtml = btn.innerHTML;
             
             btn.innerHTML = `<i class="fa-solid fa-check"></i> ${t.copied}`;
             btn.classList.add('text-green-400', 'border-green-500/50');
