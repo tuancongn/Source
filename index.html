@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holdstation Network Diagnostic</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        hs: {
+                            bg: '#050505',       /* Ultra Dark */
+                            card: '#111116',     /* Card BG */
+                            primary: '#9333ea',  /* Purple */
+                            accent: '#7e22ce',   /* Dark Purple */
+                            text: '#e2e8f0',     
+                            success: '#10b981',
+                            warning: '#f59e0b',
+                            danger: '#ef4444'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #202020 1px, transparent 1px), linear-gradient(to bottom, #202020 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050505; color: #e2e8f0; }
+        .glass-panel {
+            background: rgba(17, 17, 22, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(147, 51, 234, 0.15);
+        }
+        
+        /* Hiệu ứng nền Grid Cyberpunk */
+        .bg-grid {
+            background-size: 40px 40px;
+            mask-image: linear-gradient(to bottom, transparent, 10%, black, 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, 5%, black, 95%, transparent);
+        }
+
+        /* Thanh tiến trình */
+        .progress-bar-glow {
+            box-shadow: 0 0 10px #9333ea, 0 0 20px #9333ea;
+        }
+
+        /* Hiệu ứng quét */
+        .scanner-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(147, 51, 234, 0.1), transparent);
+            transform: translateY(-100%);
+            animation: scan-down 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan-down {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .matrix-text {
+            text-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans overflow-x-hidden relative">
+
+    <!-- Background Grid Effect -->
+    <div class="fixed inset-0 bg-grid-pattern bg-grid opacity-20 pointer-events-none z-0"></div>
+    
+    <!-- Decorative Orbs -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-hs-primary opacity-5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-blue-600 opacity-5 rounded-full blur-[100px] pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="p-4 border-b border-gray-800/50 sticky top-0 z-50 backdrop-blur-md bg-black/20">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/tuancongn/Source/refs/heads/main/logo_hs.webp" 
+                     onerror="this.onerror=null; this.src='https://holdstation.com/images/logo.svg';" 
+                     alt="Holdstation Logo" 
+                     class="h-8 w-auto object-contain drop-shadow-[0_0_8px_rgba(147,51,234,0.5)] transition hover:scale-105 duration-300">
+                
+                <div class="hidden sm:block h-6 w-px bg-gray-800 mx-2"></div>
+                <p class="hidden sm:block text-xs text-gray-400 font-mono tracking-widest uppercase">Network_Diagnostics_Tool_v3.0</p>
+            </div>
+            
+            <div id="status-indicator" class="flex items-center gap-2 px-3 py-1 rounded-full bg-gray-900/80 border border-gray-800 text-xs text-gray-400">
+                <span class="relative flex h-2 w-2">
+                  <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
+                  <span id="status-dot" class="relative inline-flex rounded-full h-2 w-2 bg-gray-500"></span>
+                </span>
+                <span id="status-text">Ready to scan</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-8 flex items-center justify-center relative z-10">
+        <div class="max-w-4xl w-full mx-auto space-y-6">
+            
+            <!-- Main Card -->
+            <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl relative group">
+                <!-- Scanner Beam Effect (Hidden by default) -->
+                <div id="scanner" class="scanner-beam hidden"></div>
+                
+                <!-- Progress Bar -->
+                <div id="progress-container" class="hidden absolute top-0 left-0 w-full h-1 bg-gray-800 z-20">
+                    <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 w-0 transition-all duration-300 ease-out progress-bar-glow"></div>
+                </div>
+
+                <div class="p-6 md:p-8 relative z-10">
+                    
+                    <!-- Top Section -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                        <div>
+                            <h1 class="text-2xl md:text-3xl font-bold text-white mb-2 tracking-tight">System Health Check</h1>
+                            <p class="text-gray-400 text-sm max-w-lg">Phân tích độ trễ mạng, cấu hình thiết bị và kết nối tới máy chủ Trading.</p>
+                        </div>
+                        <button onclick="startScan()" id="btn-scan" class="group relative w-full md:w-auto overflow-hidden rounded-lg bg-hs-primary px-8 py-3 font-semibold text-white shadow-[0_0_20px_rgba(147,51,234,0.3)] transition-all hover:bg-hs-accent hover:shadow-[0_0_30px_rgba(147,51,234,0.6)] active:scale-95">
+                            <span class="relative z-10 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-radar"></i> Bắt đầu kiểm tra
+                            </span>
+                            <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                        </button>
+                    </div>
+
+                    <!-- Grid Stats -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <!-- Stat 1: Ping -->
+                        <div class="bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-gray-800/60 hover:border-hs-primary/50 transition-colors group/card">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-mono text-gray-500 uppercase">Latency</span>
+                                <i class="fa-solid fa-bolt text-gray-600 group-hover/card:text-yellow-400 transition-colors"></i>
+                            </div>
+                            <div id="display-ping" class="text-3xl font-bold text-gray-700 font-mono">--</div>
+                            <div class="text-[10px] text-gray-500 mt-1 truncate">Direct connection</div>
+                        </div>
+
+                        <!-- Stat 2: IP -->
+                        <div class="bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-gray-800/60 hover:border-hs-primary/50 transition-colors group/card">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-mono text-gray-500 uppercase">Public IP</span>
+                                <i class="fa-solid fa-globe text-gray-600 group-hover/card:text-blue-400 transition-colors"></i>
+                            </div>
+                            <div id="display-ip" class="text-xl font-bold text-gray-700 font-mono break-all leading-tight mt-1">--</div>
+                            <div id="display-isp" class="text-[10px] text-gray-500 mt-2 truncate">Location Info</div>
+                        </div>
+
+                        <!-- Stat 3: FPS/WebGL -->
+                        <div class="bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-gray-800/60 hover:border-hs-primary/50 transition-colors group/card">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-mono text-gray-500 uppercase">Graphics</span>
+                                <i class="fa-solid fa-microchip text-gray-600 group-hover/card:text-green-400 transition-colors"></i>
+                            </div>
+                            <div id="display-gl" class="text-xl font-bold text-gray-700">--</div>
+                            <div class="text-[10px] text-gray-500 mt-2">Chart Rendering</div>
+                        </div>
+
+                        <!-- Stat 4: Device -->
+                        <div class="bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-gray-800/60 hover:border-hs-primary/50 transition-colors group/card">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-xs font-mono text-gray-500 uppercase">Device</span>
+                                <i class="fa-solid fa-laptop-code text-gray-600 group-hover/card:text-pink-400 transition-colors"></i>
+                            </div>
+                            <div id="display-os" class="text-xl font-bold text-gray-700 truncate">--</div>
+                            <div id="display-res" class="text-[10px] text-gray-500 mt-2">Resolution</div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Advice Box -->
+                    <div id="advice-area" class="hidden opacity-0 transform translate-y-4 transition-all duration-500 mb-6">
+                        <!-- JS injected content -->
+                    </div>
+
+                    <!-- Code Output Section -->
+                    <div class="border-t border-gray-800/60 pt-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-terminal text-hs-primary text-xs"></i>
+                                <span class="text-sm font-semibold text-gray-300">Diagnostic Code</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-gray-500 bg-black/40 px-2 py-1 rounded">BASE64_ENCODED_JSON</span>
+                        </div>
+                        
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-hs-primary/5 rounded-lg blur-sm group-hover:bg-hs-primary/10 transition-colors"></div>
+                            <textarea id="output-code" readonly class="relative w-full h-24 bg-black/60 border border-gray-700 rounded-lg p-4 text-xs text-gray-400 font-mono focus:outline-none focus:border-hs-primary/50 transition-colors resize-none custom-scrollbar" placeholder="Nhấn 'Bắt đầu kiểm tra' để sinh mã hỗ trợ..."></textarea>
+                            
+                            <div class="absolute bottom-3 right-3 z-10">
+                                <button onclick="copyCode()" id="btn-copy" disabled class="bg-gray-800/90 hover:bg-white hover:text-black text-white text-xs px-4 py-2 rounded-md font-bold transition-all disabled:opacity-0 disabled:translate-y-2 flex items-center gap-2 backdrop-blur-sm border border-gray-700 hover:border-white shadow-lg">
+                                    <i class="fa-regular fa-copy"></i> Copy Code
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <p class="text-center text-gray-600 text-[10px] font-mono">
+                ID: <span id="session-id">LOADING...</span> | NODE: ZKSYNC_ERA
+            </p>
+        </div>
+    </main>
+
+    <script>
+        // --- CẤU HÌNH ---
+        // Sử dụng ảnh tĩnh để ping thay vì trang web để tránh CORS
+        // Dùng favicon của Google làm fallback kiểm tra Internet
+        const TARGETS = {
+            MAIN: 'https://holdstation.exchange/favicon.ico', // Trick: Fetch ảnh ít bị chặn hơn
+            BACKUP: 'https://www.google.com/favicon.ico',
+            IP_API_1: 'https://api.db-ip.com/v2/free/self', // Ổn định
+            IP_API_2: 'https://www.cloudflare.com/cdn-cgi/trace', // Fallback cực mạnh
+            IP_API_3: 'https://api.ipify.org?format=json' // Fallback cuối
+        };
+
+        const sessionId = Math.random().toString(36).substring(7).toUpperCase();
+        document.getElementById('session-id').innerText = sessionId;
+
+        let isScanning = false;
+
+        // Tự chạy khi load
+        window.onload = () => setTimeout(startScan, 800);
+
+        async function startScan() {
+            if (isScanning) return;
+            isScanning = true;
+
+            // Reset UI
+            resetUI();
+            
+            // Animation bắt đầu
+            const progressBar = document.getElementById('progress-bar');
+            const progressContainer = document.getElementById('progress-container');
+            const scanner = document.getElementById('scanner');
+            
+            progressContainer.classList.remove('hidden');
+            scanner.classList.remove('hidden');
+            
+            updateStatus('scanning', 'Initializing protocols...');
+            
+            // --- STEP 1: CHECK THÔNG SỐ MÁY (10-30%) ---
+            setBar(10);
+            await delay(300);
+            
+            // WebGL
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl');
+            const glStatus = gl ? 'Active' : 'Disabled';
+            const glColor = gl ? 'text-hs-success' : 'text-hs-danger';
+            animateValue(document.getElementById('display-gl'), glStatus, glColor);
+            
+            // OS / Res
+            const os = getOS();
+            document.getElementById('display-os').innerText = os;
+            document.getElementById('display-os').className = "text-xl font-bold text-white truncate";
+            document.getElementById('display-res').innerText = `${window.screen.width}x${window.screen.height} (${window.devicePixelRatio}x)`;
+
+            setBar(30);
+            
+            // --- STEP 2: CHECK IP (30-60%) ---
+            updateStatus('scanning', 'Resolving IP Address...');
+            let ipInfo = await getIP();
+            
+            const ipEl = document.getElementById('display-ip');
+            const ispEl = document.getElementById('display-isp');
+            
+            ipEl.innerText = ipInfo.ip;
+            ipEl.className = "text-xl font-bold text-white font-mono break-all leading-tight mt-1";
+            ispEl.innerText = ipInfo.isp;
+            
+            setBar(60);
+
+            // --- STEP 3: CHECK PING (60-90%) ---
+            updateStatus('scanning', 'Pinging Exchange Server...');
+            let pingResult = await checkPing();
+            
+            const pingEl = document.getElementById('display-ping');
+            pingEl.innerText = `${pingResult.ms}ms`;
+            
+            let pingClass = "text-hs-danger";
+            if (pingResult.status === 'good') pingClass = "text-hs-success matrix-text";
+            else if (pingResult.status === 'fair') pingClass = "text-hs-warning";
+            
+            pingEl.className = `text-3xl font-bold font-mono ${pingClass}`;
+            
+            setBar(90);
+            await delay(500); // Wait for effect
+
+            // --- STEP 4: FINISH (100%) ---
+            setBar(100);
+            updateStatus('ready', 'Scan Complete');
+            
+            // Tạo Advice
+            showAdvice(pingResult.status, gl, ipInfo.ip);
+            
+            // Sinh mã
+            generateCode(ipInfo, pingResult, gl, os);
+            
+            // Dọn dẹp
+            setTimeout(() => {
+                progressContainer.classList.add('hidden');
+                scanner.classList.add('hidden');
+                document.getElementById('btn-copy').disabled = false;
+                document.getElementById('btn-copy').classList.remove('disabled:opacity-0', 'disabled:translate-y-2');
+                document.getElementById('btn-scan').innerHTML = '<span class="relative z-10 flex items-center justify-center gap-2"><i class="fa-solid fa-rotate"></i> Kiểm tra lại</span>';
+                isScanning = false;
+            }, 500);
+        }
+
+        // --- HÀM HỖ TRỢ LOGIC ---
+
+        async function getIP() {
+            // Thử nguồn 1: db-ip
+            try {
+                const res = await fetch(TARGETS.IP_API_1);
+                if(res.ok) {
+                    const data = await res.json();
+                    return { ip: data.ipAddress, isp: `${data.city}, ${data.countryCode}` };
+                }
+            } catch(e) {}
+
+            // Thử nguồn 2: ipify
+            try {
+                const res = await fetch(TARGETS.IP_API_3);
+                if(res.ok) {
+                    const data = await res.json();
+                    return { ip: data.ip, isp: 'ISP Info Hidden (AdBlock)' };
+                }
+            } catch(e) {}
+
+            // Thử nguồn 3: Cloudflare Trace (Text parsing)
+            try {
+                const res = await fetch(TARGETS.IP_API_2);
+                const text = await res.text();
+                const ipLine = text.split('\n').find(l => l.startsWith('ip='));
+                const locLine = text.split('\n').find(l => l.startsWith('loc='));
+                if(ipLine) {
+                    return { 
+                        ip: ipLine.split('=')[1], 
+                        isp: locLine ? `Location: ${locLine.split('=')[1]}` : 'Unknown Location' 
+                    };
+                }
+            } catch(e) {}
+
+            return { ip: 'Hidden/Blocked', isp: 'Please disable AdBlock to see IP' };
+        }
+
+        async function checkPing() {
+            const start = performance.now();
+            let status = 'error';
+            let ms = 999;
+
+            try {
+                // Thử ping favicon của Holdstation với no-cors
+                // cache: no-store bắt buộc để browser không lấy cache cũ
+                await fetch(TARGETS.MAIN, { mode: 'no-cors', cache: 'no-store' });
+                const end = performance.now();
+                ms = Math.round(end - start);
+                
+                if (ms < 150) status = 'good';
+                else if (ms < 500) status = 'fair';
+                else status = 'bad';
+
+            } catch (e) {
+                // Nếu lỗi, thử ping Google để xem có mạng không
+                try {
+                    await fetch(TARGETS.BACKUP, { mode: 'no-cors', cache: 'no-store' });
+                    // Nếu Google OK -> Mạng OK, nhưng Holdstation bị chặn
+                    status = 'blocked'; 
+                    ms = 'ERR';
+                } catch (err) {
+                    // Cả Google cũng lỗi -> Mất mạng
+                    status = 'offline';
+                    ms = 'OFF';
+                }
+            }
+            return { ms, status };
+        }
+
+        function showAdvice(pingStatus, gl, ip) {
+            const box = document.getElementById('advice-area');
+            let html = '';
+            let style = '';
+
+            if (pingStatus === 'offline') {
+                style = 'bg-red-500/10 border-red-500/50 text-red-200';
+                html = `<div class="flex gap-3"><i class="fa-solid fa-plug text-red-500 mt-1"></i><div><strong class="text-red-400">Mất kết nối Internet</strong><p class="text-xs opacity-80">Không thể kết nối mạng. Vui lòng kiểm tra Wifi/4G.</p></div></div>`;
+            } else if (pingStatus === 'blocked' || pingStatus === 'error') {
+                style = 'bg-orange-500/10 border-orange-500/50 text-orange-200';
+                html = `<div class="flex gap-3"><i class="fa-solid fa-shield-cat text-orange-500 mt-1"></i><div><strong class="text-orange-400">Kết nối bị chặn (CORS/Firewall)</strong><p class="text-xs opacity-80">Trình duyệt hoặc Firewall công ty đang chặn kết nối đến Holdstation. Hãy thử dùng 4G hoặc tắt VPN.</p></div></div>`;
+            } else if (!gl) {
+                style = 'bg-yellow-500/10 border-yellow-500/50 text-yellow-200';
+                html = `<div class="flex gap-3"><i class="fa-solid fa-tv text-yellow-500 mt-1"></i><div><strong class="text-yellow-400">Thiếu WebGL</strong><p class="text-xs opacity-80">Trình duyệt không hỗ trợ đồ họa. Bạn sẽ không xem được biểu đồ giá.</p></div></div>`;
+            } else if (pingStatus === 'good') {
+                style = 'bg-emerald-500/10 border-emerald-500/50 text-emerald-200';
+                html = `<div class="flex gap-3"><i class="fa-solid fa-check-circle text-emerald-500 mt-1"></i><div><strong class="text-emerald-400">Hệ thống hoàn hảo</strong><p class="text-xs opacity-80">Mạng ổn định, độ trễ thấp. Sẵn sàng giao dịch.</p></div></div>`;
+            } else {
+                style = 'bg-blue-500/10 border-blue-500/50 text-blue-200';
+                html = `<div class="flex gap-3"><i class="fa-solid fa-wifi text-blue-500 mt-1"></i><div><strong class="text-blue-400">Mạng ổn định</strong><p class="text-xs opacity-80">Ping chấp nhận được. Có thể giao dịch bình thường.</p></div></div>`;
+            }
+
+            box.innerHTML = html;
+            box.className = `p-4 rounded-lg border ${style} backdrop-blur-md mb-6 animate-fade-in`;
+            box.classList.remove('hidden', 'opacity-0', 'translate-y-4');
+        }
+
+        function generateCode(ip, ping, gl, os) {
+            const data = {
+                app: "Holdstation-HealthCheck",
+                ver: "3.0",
+                ts: Date.now(),
+                net: { ip: ip.ip, loc: ip.isp, ping: ping.ms, status: ping.status },
+                sys: { os: os, gl: gl ? "Yes" : "No", res: `${window.screen.width}x${window.screen.height}` },
+                ua: navigator.userAgent
+            };
+            const json = JSON.stringify(data);
+            const b64 = btoa(encodeURIComponent(json)); // Safe Encode
+            document.getElementById('output-code').value = b64;
+        }
+
+        // --- UTILS ---
+        function resetUI() {
+            document.getElementById('display-ping').innerText = '--';
+            document.getElementById('display-ping').className = "text-3xl font-bold text-gray-700 font-mono";
+            document.getElementById('display-ip').innerText = '--';
+            document.getElementById('display-ip').className = "text-xl font-bold text-gray-700 font-mono break-all leading-tight mt-1";
+            document.getElementById('advice-area').classList.add('hidden', 'opacity-0', 'translate-y-4');
+            document.getElementById('output-code').value = '';
+            document.getElementById('btn-scan').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Scanning...';
+            document.getElementById('btn-copy').disabled = true;
+        }
+
+        function setBar(percent) {
+            document.getElementById('progress-bar').style.width = percent + '%';
+        }
+
+        function updateStatus(state, text) {
+            const dot = document.getElementById('status-dot');
+            const ping = document.getElementById('status-ping');
+            const label = document.getElementById('status-text');
+            
+            label.innerText = text;
+            if (state === 'scanning') {
+                dot.className = "relative inline-flex rounded-full h-2 w-2 bg-yellow-500";
+                ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75";
+            } else {
+                dot.className = "relative inline-flex rounded-full h-2 w-2 bg-green-500";
+                ping.className = "hidden";
+            }
+        }
+
+        function animateValue(obj, val, colorClass) {
+            obj.innerText = val;
+            obj.className = `text-xl font-bold ${colorClass}`;
+        }
+
+        function getOS() {
+            let userAgent = window.navigator.userAgent,
+                platform = window.navigator.platform,
+                macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+                windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+                iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+                os = null;
+
+            if (macosPlatforms.indexOf(platform) !== -1) os = 'Mac OS';
+            else if (iosPlatforms.indexOf(platform) !== -1) os = 'iOS';
+            else if (windowsPlatforms.indexOf(platform) !== -1) os = 'Windows';
+            else if (/Android/.test(userAgent)) os = 'Android';
+            else if (!os && /Linux/.test(platform)) os = 'Linux';
+            return os || "Unknown OS";
+        }
+
+        function delay(ms) { return new Promise(res => setTimeout(res, ms)); }
+
+        function copyCode() {
+            const el = document.getElementById('output-code');
+            el.select();
+            document.execCommand('copy');
+            const btn = document.getElementById('btn-copy');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            btn.classList.add('text-green-400', 'border-green-500/50');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+                btn.classList.remove('text-green-400', 'border-green-500/50');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
