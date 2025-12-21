@@ -118,9 +118,9 @@
         }
 
         /* Custom Scrollbar */
-        textarea::-webkit-scrollbar { width: 6px; }
-        textarea::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        textarea::-webkit-scrollbar-thumb:hover { background: #555; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans overflow-x-hidden relative selection:bg-hs-primary selection:text-white">
@@ -236,27 +236,6 @@
 
                     <div id="advice-area" class="hidden opacity-0 transform translate-y-4 transition-all duration-500 mb-6"></div>
 
-                    <div class="border-t border-gray-800/60 pt-6">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
-                            <div class="flex items-center gap-2 text-hs-primary">
-                                <i class="fa-solid fa-life-ring"></i>
-                                <span class="text-sm font-bold tracking-wide" data-key="supportLabel">Support Ticket</span>
-                            </div>
-                            <p class="text-[11px] text-gray-400 italic" data-key="supportDesc">Having issues? Send this code to our Support Team.</p>
-                        </div>
-                        
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-hs-primary/5 rounded-lg blur-md group-hover:bg-hs-primary/10 transition-colors duration-500"></div>
-                            <textarea id="output-code" readonly class="relative w-full h-24 bg-black/40 border border-gray-700/50 rounded-lg p-4 text-xs text-gray-400 font-mono focus:outline-none focus:border-hs-primary/50 transition-colors resize-none" placeholder="..."></textarea>
-                            
-                            <div class="absolute bottom-3 right-3 z-10">
-                                <button onclick="copyCode()" id="btn-copy" disabled class="bg-gray-800/80 hover:bg-white hover:text-black text-white text-[10px] uppercase font-bold px-4 py-2 rounded shadow-lg transition-all disabled:opacity-0 disabled:translate-y-2 flex items-center gap-2 backdrop-blur-md border border-white/10 hover:border-transparent">
-                                    <i class="fa-regular fa-copy"></i> <span data-key="copyBtn">Copy Code</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -288,10 +267,6 @@
                 ip: "IP Công khai",
                 graphics: "Đồ họa",
                 device: "Thiết bị",
-                supportLabel: "Mã hỗ trợ kỹ thuật",
-                supportDesc: "Gặp sự cố? Gửi ngay mã này cho đội ngũ CSKH để được hỗ trợ.",
-                copyBtn: "Sao chép mã",
-                copied: "Đã sao chép!",
                 ready: "Sẵn sàng",
                 scanning: "Đang quét...",
                 resolving: "Đang lấy IP...",
@@ -316,10 +291,6 @@
                 ip: "Public IP",
                 graphics: "Graphics",
                 device: "Device",
-                supportLabel: "Support Ticket",
-                supportDesc: "Having issues? Send this code to our Support Team for assistance.",
-                copyBtn: "Copy Code",
-                copied: "Copied!",
                 ready: "Ready",
                 scanning: "Analyzing...",
                 resolving: "Resolving IP...",
@@ -478,14 +449,11 @@
             updateStatus('complete', t.complete);
             
             showAdvice(pingResult.status, gl, ipInfo.ip);
-            generateCode(ipInfo, pingResult, gl, os);
             
             // Cleanup
             setTimeout(() => {
                 document.getElementById('progress-container').classList.add('hidden');
                 scanner.classList.add('hidden');
-                document.getElementById('btn-copy').disabled = false;
-                document.getElementById('btn-copy').classList.remove('disabled:opacity-0', 'disabled:translate-y-2');
                 
                 const btnScan = document.getElementById('btn-scan');
                 btnScan.innerHTML = `<span class="relative z-10 flex items-center justify-center gap-2">${t.retryBtn}</span>`;
@@ -587,25 +555,8 @@
                     </div>`;
         }
 
-        function generateCode(ip, ping, gl, os) {
-            const data = {
-                app: "Holdstation-HealthCheck",
-                ver: "3.2",
-                ts: Date.now(),
-                lang: currentLang,
-                net: { ip: ip.ip, loc: ip.isp, ping: ping.ms, status: ping.status },
-                sys: { os: os, gl: gl ? "Yes" : "No", res: `${window.screen.width}x${window.screen.height}` },
-                ua: navigator.userAgent
-            };
-            const b64 = btoa(encodeURIComponent(JSON.stringify(data)));
-            const el = document.getElementById('output-code');
-            el.value = b64;
-        }
-
         function resetUI() {
             document.getElementById('advice-area').classList.add('hidden');
-            document.getElementById('output-code').value = '';
-            document.getElementById('btn-copy').disabled = true;
             document.getElementById('btn-scan').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> ...';
         }
 
@@ -639,21 +590,6 @@
             if (/Mac/.test(ua)) return "MacOS";
             if (/Linux/.test(ua)) return "Linux";
             return "Unknown";
-        }
-
-        function copyCode() {
-            const el = document.getElementById('output-code');
-            el.select();
-            document.execCommand('copy');
-            const btn = document.getElementById('btn-copy');
-            const t = LANG[currentLang];
-            
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> ${t.copied}`;
-            btn.classList.add('text-green-400', 'border-green-500/50');
-            setTimeout(() => {
-                btn.innerHTML = `<i class="fa-regular fa-copy"></i> <span data-key="copyBtn">${t.copyBtn}</span>`;
-                btn.classList.remove('text-green-400', 'border-green-500/50');
-            }, 2000);
         }
     </script>
 </body>
