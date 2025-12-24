@@ -61,7 +61,7 @@
         }
     </style>
 </head>
-<body class="bg-trade-darker text-slate-300 font-sans antialiased selection:bg-trade-accent selection:text-white">
+<body class="bg-trade-darker text-slate-300 font-sans antialiased selection:bg-trade-accent selection:text-white relative">
 
     <!-- Navigation -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
@@ -75,10 +75,12 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#how-it-works" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Cách hoạt động</a>
                         <a href="#features" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Tính năng</a>
-                        <a href="#signals" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">AI Signals</a>
                         <a href="#pricing" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Bảng giá</a>
-                        <a href="#blog" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Góc Nhìn (Blog)</a>
+                        <a href="#blog" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Góc Nhìn</a>
+                        <!-- Login Trigger -->
+                        <button onclick="toggleLoginModal()" class="text-white hover:text-trade-accent font-medium px-3 py-2 text-sm">Đăng nhập</button>
                         <a href="#contact" class="bg-trade-accent hover:bg-trade-accentHover text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-lg shadow-trade-accent/30">Dùng thử miễn phí</a>
                     </div>
                 </div>
@@ -92,11 +94,11 @@
         <!-- Mobile Menu -->
         <div class="md:hidden hidden bg-trade-dark border-t border-gray-800" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#how-it-works" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Cách hoạt động</a>
                 <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Tính năng</a>
-                <a href="#signals" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">AI Signals</a>
                 <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Bảng giá</a>
-                <a href="#blog" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Blog</a>
-                <a href="#" class="block w-full text-center bg-trade-accent mt-4 py-3 rounded-md text-white font-bold">Dùng thử ngay</a>
+                <button onclick="toggleLoginModal()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Đăng nhập</button>
+                <a href="#contact" class="block w-full text-center bg-trade-accent mt-4 py-3 rounded-md text-white font-bold">Dùng thử ngay</a>
             </div>
         </div>
     </nav>
@@ -187,8 +189,63 @@
         </div>
     </section>
 
+    <!-- NEW SECTION: How It Works (Demo/Video Placeholder) -->
+    <section id="how-it-works" class="py-20 bg-trade-dark border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Quy Trình 3 Bước Đơn Giản</h2>
+                <p class="text-slate-400">Bắt đầu hành trình giao dịch tự động hóa ngay hôm nay.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Video/Demo Placeholder -->
+                <div class="bg-slate-800 rounded-2xl aspect-video flex items-center justify-center relative group cursor-pointer overflow-hidden border border-slate-700 shadow-xl">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
+                    <div class="w-16 h-16 bg-trade-accent rounded-full flex items-center justify-center z-10 shadow-lg group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-play text-white text-xl pl-1"></i>
+                    </div>
+                    <div class="absolute bottom-4 left-4 text-white z-10">
+                        <p class="font-bold">Xem Demo Hệ Thống</p>
+                        <p class="text-xs text-slate-300">Thời lượng: 2:30</p>
+                    </div>
+                </div>
+
+                <!-- Steps -->
+                <div class="space-y-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 rounded-full bg-trade-secondary/20 text-trade-secondary flex items-center justify-center font-bold border border-trade-secondary/50">1</div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Đăng ký & Kết nối</h4>
+                            <p class="text-slate-400">Tạo tài khoản và kết nối với dữ liệu thị trường (Data feed) hoặc tài khoản môi giới của bạn chỉ trong vài cú nhấp chuột.</p>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 rounded-full bg-trade-accent/20 text-trade-accent flex items-center justify-center font-bold border border-trade-accent/50">2</div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Chọn Chiến Lược AI</h4>
+                            <p class="text-slate-400">Lựa chọn các thuật toán có sẵn (Conservative, Aggressive...) hoặc tự cấu hình bộ lọc (Screener) của riêng bạn.</p>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <div class="flex-shrink-0 mr-4">
+                            <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold border border-purple-500/50">3</div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Nhận Tín Hiệu & Chốt Lời</h4>
+                            <p class="text-slate-400">Nhận thông báo qua Telegram/App khi có điểm vào lệnh đẹp. Thực hiện giao dịch và theo dõi hiệu suất.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
-    <section id="features" class="py-20 bg-slate-900 border-y border-slate-800">
+    <section id="features" class="py-20 bg-slate-900 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-trade-accent font-bold tracking-wide uppercase text-sm mb-2">Công Nghệ Cốt Lõi</h2>
@@ -236,8 +293,8 @@
         </div>
     </section>
 
-    <!-- Pricing Section (Inspired by Trade Ideas Pricing) -->
-    <section id="pricing" class="py-24 relative">
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 relative bg-trade-darker">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Bảng Giá Linh Hoạt</h2>
@@ -259,7 +316,7 @@
                     <div class="my-6">
                         <span class="text-4xl font-bold text-white">₫990k</span><span class="text-slate-500">/tháng</span>
                     </div>
-                    <a href="#" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Bắt đầu ngay</a>
+                    <a href="#contact" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Bắt đầu ngay</a>
                     <ul class="mt-8 space-y-4 text-sm text-slate-300">
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> 10 Tín hiệu AI/ngày</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Biểu đồ cơ bản</li>
@@ -277,9 +334,9 @@
                     <div class="my-6">
                         <span class="text-5xl font-bold text-white">₫2.5tr</span><span class="text-slate-400">/tháng</span>
                     </div>
-                    <a href="#" class="block w-full py-4 px-4 bg-trade-accent hover:bg-trade-accentHover text-white font-bold text-center rounded-lg transition-colors shadow-lg">Dùng thử 7 ngày</a>
+                    <a href="#contact" class="block w-full py-4 px-4 bg-trade-accent hover:bg-trade-accentHover text-white font-bold text-center rounded-lg transition-colors shadow-lg">Dùng thử 7 ngày</a>
                     <ul class="mt-8 space-y-4 text-sm text-white">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> <strong>Không giới hạn tín hiệu</strong></li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> <strong>Không giới hạn</strong> tín hiệu</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Truy cập AI Holly (Bot)</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Backtesting không giới hạn</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Phòng Trading Live (Webinar)</li>
@@ -294,7 +351,7 @@
                     <div class="my-6">
                         <span class="text-4xl font-bold text-white">Liên hệ</span>
                     </div>
-                    <a href="#" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Tư vấn giải pháp</a>
+                    <a href="#contact" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Tư vấn giải pháp</a>
                     <ul class="mt-8 space-y-4 text-sm text-slate-300">
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Mọi tính năng Premium</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Thuật toán riêng biệt (Custom Algo)</li>
@@ -307,7 +364,7 @@
         </div>
     </section>
 
-    <!-- Blog/Education Section (Inspired by Uptick Coffee) -->
+    <!-- Blog/Education Section -->
     <section id="blog" class="py-20 bg-slate-50 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-end mb-12">
@@ -324,7 +381,7 @@
                 <!-- Article 1 -->
                 <div class="group cursor-pointer">
                     <div class="overflow-hidden rounded-xl mb-4">
-                        <img src="https://images.unsplash.com/photo-1665656653092-684fdd316aca?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Trading Chart" class="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1611974765270-ca1258634369?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Trading Chart" class="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="text-xs font-bold text-trade-accent uppercase mb-2">Chiến lược</div>
                     <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-trade-secondary transition-colors">Cách sử dụng Volume Profile để tìm điểm vào lệnh</h3>
@@ -354,6 +411,45 @@
         </div>
     </section>
 
+    <!-- NEW SECTION: Contact Form -->
+    <section id="contact" class="py-20 bg-trade-dark border-t border-slate-800">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-slate-800 rounded-2xl p-8 border border-slate-700 shadow-2xl">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-white">Liên Hệ Tư Vấn</h2>
+                    <p class="text-slate-400 mt-2">Để lại thông tin, đội ngũ Support sẽ liên hệ lại trong 24h.</p>
+                </div>
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Họ tên</label>
+                            <input type="text" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors" placeholder="Nguyễn Văn A">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                            <input type="email" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors" placeholder="email@example.com">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Gói quan tâm</label>
+                        <select class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors">
+                            <option>Standard (Cơ bản)</option>
+                            <option selected>Premium AI (Nâng cao)</option>
+                            <option>Giải pháp Tổ chức</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Nội dung cần hỗ trợ</label>
+                        <textarea rows="4" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent transition-colors" placeholder="Tôi muốn hỏi về..."></textarea>
+                    </div>
+                    <button type="button" class="w-full bg-trade-accent hover:bg-trade-accentHover text-white font-bold py-3 rounded-lg transition-all shadow-lg transform hover:-translate-y-1">
+                        Gửi Yêu Cầu
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <!-- Call to Action / Footer -->
     <footer class="bg-trade-darker pt-20 pb-10 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -377,20 +473,19 @@
                 <div>
                     <h4 class="text-white font-bold mb-6">Sản phẩm</h4>
                     <ul class="space-y-4 text-slate-400">
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">AI Signals</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Auto Bot</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Screener</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Bảng giá</a></li>
+                        <li><a href="#how-it-works" class="hover:text-trade-accent transition-colors">Hướng dẫn sử dụng</a></li>
+                        <li><a href="#pricing" class="hover:text-trade-accent transition-colors">Bảng giá</a></li>
+                        <li><a href="#features" class="hover:text-trade-accent transition-colors">Tính năng</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-bold mb-6">Công ty</h4>
                     <ul class="space-y-4 text-slate-400">
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Về chúng tôi</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Blog</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Liên hệ</a></li>
-                        <li><a href="#" class="hover:text-trade-accent transition-colors">Chính sách bảo mật</a></li>
+                        <li><a href="#contact" class="hover:text-trade-accent transition-colors">Liên hệ</a></li>
+                        <li><a href="#blog" class="hover:text-trade-accent transition-colors">Blog</a></li>
+                        <!-- Placeholder link for Privacy Policy -->
+                        <li><a href="#" onclick="alert('Trang Chính sách đang được xây dựng!')" class="hover:text-trade-accent transition-colors">Chính sách bảo mật</a></li>
                     </ul>
                 </div>
             </div>
@@ -406,6 +501,50 @@
         </div>
     </footer>
 
+    <!-- Login Modal (UI Only) -->
+    <div id="login-modal" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onclick="toggleLoginModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-4">
+            <div class="bg-trade-dark border border-slate-700 rounded-2xl shadow-2xl p-8 relative">
+                <button onclick="toggleLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl font-bold text-white">Đăng Nhập</h3>
+                    <p class="text-slate-400 text-sm mt-1">Truy cập vào hệ thống AI Signals</p>
+                </div>
+
+                <div class="space-y-4">
+                    <button class="w-full bg-white text-slate-900 font-bold py-3 rounded-lg flex items-center justify-center hover:bg-slate-100 transition-colors">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5 mr-2" alt="Google">
+                        Tiếp tục với Google
+                    </button>
+                    
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-slate-700"></div>
+                        <span class="flex-shrink-0 mx-4 text-slate-500 text-xs">Hoặc dùng Email</span>
+                        <div class="flex-grow border-t border-slate-700"></div>
+                    </div>
+
+                    <input type="email" placeholder="Email của bạn" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent">
+                    <input type="password" placeholder="Mật khẩu" class="w-full bg-slate-900 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-trade-accent">
+                    
+                    <button class="w-full bg-trade-accent hover:bg-trade-accentHover text-white font-bold py-3 rounded-lg transition-colors">
+                        Đăng Nhập
+                    </button>
+                </div>
+                
+                <div class="mt-6 text-center text-sm text-slate-500">
+                    Chưa có tài khoản? <a href="#" class="text-trade-accent hover:underline">Đăng ký ngay</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Interactive Scripts -->
     <script>
         // Mobile Menu Toggle
@@ -417,6 +556,16 @@
             } else {
                 menu.classList.remove('block');
                 menu.classList.add('hidden');
+            }
+        }
+
+        // Login Modal Toggle
+        function toggleLoginModal() {
+            const modal = document.getElementById('login-modal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
             }
         }
 
