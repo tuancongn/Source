@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trade Master - Giải Pháp Giao Dịch Thuật Toán</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        trade: {
+                            dark: '#0f172a',
+                            darker: '#020617',
+                            accent: '#10b981', // Emerald green for profit
+                            accentHover: '#059669',
+                            secondary: '#6366f1', // Indigo for AI/Tech
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #10b981, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-trade-darker text-slate-300 font-sans antialiased selection:bg-trade-accent selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center space-x-2 group">
+                        <i class="fa-solid fa-chart-line text-3xl text-trade-accent group-hover:text-trade-secondary transition-colors"></i>
+                        <span class="text-2xl font-bold text-white tracking-tight">AI<span class="text-trade-accent">Trade</span>Master</span>
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#features" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Tính năng</a>
+                        <a href="#signals" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">AI Signals</a>
+                        <a href="#pricing" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Bảng giá</a>
+                        <a href="#blog" class="hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Góc Nhìn (Blog)</a>
+                        <a href="#contact" class="bg-trade-accent hover:bg-trade-accentHover text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-lg shadow-trade-accent/30">Dùng thử miễn phí</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMenu()" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-trade-dark border-t border-gray-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Tính năng</a>
+                <a href="#signals" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">AI Signals</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Bảng giá</a>
+                <a href="#blog" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Blog</a>
+                <a href="#" class="block w-full text-center bg-trade-accent mt-4 py-3 rounded-md text-white font-bold">Dùng thử ngay</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-trade-secondary/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-trade-accent/10 rounded-full blur-3xl"></div>
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center lg:text-left lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <div>
+                    <div class="inline-flex items-center px-4 py-2 rounded-full border border-trade-accent/30 bg-trade-accent/10 text-trade-accent text-sm font-semibold mb-6 animate-pulse">
+                        <span class="mr-2">●</span> AI Virtual Assistant 2.0 Đã Ra Mắt
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+                        Giao Dịch Thông Minh Hơn Với <span class="gradient-text">Trợ Lý AI</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 mb-8 leading-relaxed">
+                        Săn tìm cơ hội giao dịch real-time bằng các thuật toán đã được backtest hàng nghìn lần. Không còn cảm tính, chỉ có dữ liệu.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#pricing" class="px-8 py-4 bg-trade-accent hover:bg-trade-accentHover text-white rounded-lg font-bold text-lg shadow-lg shadow-trade-accent/40 transition-all transform hover:-translate-y-1 flex items-center justify-center">
+                            Xem Bảng Giá <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </a>
+                        <a href="#how-it-works" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg font-bold text-lg transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-play mr-2 text-trade-secondary"></i> Xem Demo
+                        </a>
+                    </div>
+                    <div class="mt-8 flex items-center justify-center lg:justify-start space-x-6 text-sm text-slate-500">
+                        <div class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-2"></i> Real-time Data</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-2"></i> Backtest 99%</div>
+                        <div class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-2"></i> Hỗ trợ 24/7</div>
+                    </div>
+                </div>
+                
+                <!-- Hero Image / Visual -->
+                <div class="mt-12 lg:mt-0 relative group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-trade-accent to-trade-secondary rounded-2xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                    <div class="relative bg-slate-900 border border-slate-700 rounded-2xl p-4 shadow-2xl overflow-hidden">
+                        <!-- Simulated Trading Interface -->
+                        <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-2">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <div class="text-xs text-slate-500 font-mono">AI_SIGNAL_V3.exe</div>
+                        </div>
+                        <div class="space-y-3 font-mono text-sm">
+                            <div class="flex justify-between items-center bg-slate-800/50 p-2 rounded">
+                                <span class="text-trade-accent">BUY SIGNAL: VN30</span>
+                                <span class="text-white">1,245.50</span>
+                                <span class="text-green-400">+1.2% <i class="fa-solid fa-arrow-up"></i></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-800/50 p-2 rounded">
+                                <span class="text-trade-accent">BUY SIGNAL: FPT</span>
+                                <span class="text-white">98.20</span>
+                                <span class="text-green-400">+2.4% <i class="fa-solid fa-arrow-up"></i></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-800/50 p-2 rounded opacity-50">
+                                <span class="text-red-400">SELL SIGNAL: NVL</span>
+                                <span class="text-white">14.30</span>
+                                <span class="text-red-500">-3.1% <i class="fa-solid fa-arrow-down"></i></span>
+                            </div>
+                             <!-- Chart Visualization Placeholder -->
+                            <div class="h-40 w-full bg-slate-800 rounded mt-4 relative overflow-hidden flex items-end px-2 space-x-1">
+                                <div class="w-1/6 bg-trade-secondary/50 h-[40%] rounded-t"></div>
+                                <div class="w-1/6 bg-trade-secondary/60 h-[50%] rounded-t"></div>
+                                <div class="w-1/6 bg-trade-secondary/40 h-[30%] rounded-t"></div>
+                                <div class="w-1/6 bg-trade-accent/60 h-[70%] rounded-t animate-pulse"></div>
+                                <div class="w-1/6 bg-trade-accent/80 h-[85%] rounded-t"></div>
+                                <div class="w-1/6 bg-trade-accent h-[95%] rounded-t"></div>
+                                <!-- Floating Label -->
+                                <div class="absolute top-4 left-4 bg-slate-900/80 px-2 py-1 rounded text-xs text-white border border-slate-700">
+                                    AI Prediction: Bullish
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-slate-900 border-y border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-trade-accent font-bold tracking-wide uppercase text-sm mb-2">Công Nghệ Cốt Lõi</h2>
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Tại sao chọn AI Trade Master?</h3>
+                <p class="text-slate-400 max-w-2xl mx-auto">Chúng tôi không chỉ cung cấp biểu đồ, chúng tôi cung cấp <span class="text-white font-semibold">chiến lược chiến thắng</span> được tìm kiếm bởi trí tuệ nhân tạo.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-trade-dark border border-slate-800 p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-robot text-8xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-trade-secondary/20 rounded-xl flex items-center justify-center mb-6 text-trade-secondary">
+                        <i class="fa-solid fa-brain text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">AI Virtual Analyst</h4>
+                    <p class="text-slate-400">Bot tự động quét thị trường 24/7, phân tích hàng triệu điểm dữ liệu để tìm ra các mẫu hình (patterns) có xác suất thắng cao nhất.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-trade-dark border border-slate-800 p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-bolt text-8xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-trade-accent/20 rounded-xl flex items-center justify-center mb-6 text-trade-accent">
+                        <i class="fa-solid fa-satellite-dish text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Real-time Signals</h4>
+                    <p class="text-slate-400">Nhận tín hiệu Mua/Bán trực tiếp qua Telegram hoặc Web App. Độ trễ gần như bằng không so với diễn biến thị trường.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-trade-dark border border-slate-800 p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                        <i class="fa-solid fa-chart-pie text-8xl text-white"></i>
+                    </div>
+                    <div class="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 text-purple-400">
+                        <i class="fa-solid fa-flask text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white mb-3">Backtesting Engine</h4>
+                    <p class="text-slate-400">Kiểm chứng chiến lược của bạn với dữ liệu lịch sử 10 năm. Xem Win Rate, Profit Factor trước khi xuống tiền thật.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section (Inspired by Trade Ideas Pricing) -->
+    <section id="pricing" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Bảng Giá Linh Hoạt</h2>
+                <p class="text-slate-400">Chọn gói phù hợp với phong cách giao dịch của bạn.</p>
+                
+                <!-- Toggle Monthly/Yearly -->
+                <div class="mt-8 inline-flex bg-slate-800 p-1 rounded-full relative">
+                    <button class="px-6 py-2 rounded-full bg-trade-accent text-white font-medium shadow-sm transition-all" id="btn-monthly">Hàng Tháng</button>
+                    <button class="px-6 py-2 rounded-full text-slate-400 font-medium hover:text-white transition-all" id="btn-yearly">Hàng Năm <span class="text-xs text-green-400 ml-1">-20%</span></button>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 items-center">
+                
+                <!-- Standard Plan -->
+                <div class="bg-trade-dark border border-slate-700 rounded-2xl p-8 hover:border-slate-500 transition-colors">
+                    <h3 class="text-xl font-semibold text-white">Standard</h3>
+                    <p class="text-slate-400 text-sm mt-2">Dành cho người mới bắt đầu.</p>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-white">₫990k</span><span class="text-slate-500">/tháng</span>
+                    </div>
+                    <a href="#" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Bắt đầu ngay</a>
+                    <ul class="mt-8 space-y-4 text-sm text-slate-300">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> 10 Tín hiệu AI/ngày</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Biểu đồ cơ bản</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Cảnh báo giá</li>
+                        <li class="flex items-center opacity-50"><i class="fa-solid fa-xmark text-slate-500 mr-3"></i> Backtesting nâng cao</li>
+                        <li class="flex items-center opacity-50"><i class="fa-solid fa-xmark text-slate-500 mr-3"></i> Bot tự động vào lệnh</li>
+                    </ul>
+                </div>
+
+                <!-- Premium Plan (Highlight) -->
+                <div class="bg-slate-800/80 border-2 border-trade-accent rounded-2xl p-8 relative transform lg:scale-110 shadow-2xl shadow-trade-accent/20 z-10">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-trade-accent text-white px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wide">Phổ biến nhất</div>
+                    <h3 class="text-xl font-semibold text-white">Premium AI</h3>
+                    <p class="text-slate-300 text-sm mt-2">Dành cho Trader chuyên nghiệp.</p>
+                    <div class="my-6">
+                        <span class="text-5xl font-bold text-white">₫2.5tr</span><span class="text-slate-400">/tháng</span>
+                    </div>
+                    <a href="#" class="block w-full py-4 px-4 bg-trade-accent hover:bg-trade-accentHover text-white font-bold text-center rounded-lg transition-colors shadow-lg">Dùng thử 7 ngày</a>
+                    <ul class="mt-8 space-y-4 text-sm text-white">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> <strong>Không giới hạn</strong> tín hiệu</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Truy cập AI Holly (Bot)</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Backtesting không giới hạn</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Phòng Trading Live (Webinar)</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3"></i> Kết nối API Broker</li>
+                    </ul>
+                </div>
+
+                <!-- Institutional Plan -->
+                <div class="bg-trade-dark border border-slate-700 rounded-2xl p-8 hover:border-slate-500 transition-colors">
+                    <h3 class="text-xl font-semibold text-white">Tổ chức</h3>
+                    <p class="text-slate-400 text-sm mt-2">Dành cho quỹ và đội nhóm.</p>
+                    <div class="my-6">
+                        <span class="text-4xl font-bold text-white">Liên hệ</span>
+                    </div>
+                    <a href="#" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600">Tư vấn giải pháp</a>
+                    <ul class="mt-8 space-y-4 text-sm text-slate-300">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Mọi tính năng Premium</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Thuật toán riêng biệt (Custom Algo)</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Hỗ trợ 1-1 ưu tiên</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Đào tạo nội bộ</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3"></i> Data Feed riêng</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog/Education Section (Inspired by Uptick Coffee) -->
+    <section id="blog" class="py-20 bg-slate-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Góc Nhìn Trader</h2>
+                    <p class="text-slate-600 mt-2">Phân tích thị trường, bài học trading và cà phê sáng.</p>
+                </div>
+                <a href="#" class="hidden md:flex items-center text-trade-accent font-bold hover:text-trade-dark transition-colors">
+                    Xem tất cả bài viết <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Article 1 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden rounded-xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1611974765270-ca1258634369?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Trading Chart" class="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="text-xs font-bold text-trade-accent uppercase mb-2">Chiến lược</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-trade-secondary transition-colors">Cách sử dụng Volume Profile để tìm điểm vào lệnh</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3">Khối lượng giao dịch là dấu chân của "Cá mập". Hãy học cách đọc vị họ thông qua công cụ Volume Profile...</p>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden rounded-xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1642543492481-44e81e3914a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Crypto AI" class="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="text-xs font-bold text-trade-accent uppercase mb-2">Công nghệ</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-trade-secondary transition-colors">AI đang thay đổi cuộc chơi Trading như thế nào?</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3">Từ High Frequency Trading đến các thuật toán Sentiment Analysis, AI không còn là tương lai, nó là hiện tại...</p>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden rounded-xl mb-4">
+                        <img src="https://images.unsplash.com/photo-1559526324-593bc073d938?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Morning Coffee" class="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="text-xs font-bold text-trade-accent uppercase mb-2">Tâm lý</div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 group-hover:text-trade-secondary transition-colors">Cà phê sáng & Tâm lý giao dịch vững vàng</h3>
+                    <p class="text-slate-600 text-sm line-clamp-3">Tại sao 90% trader thua lỗ? Không phải vì phương pháp, mà là vì kỷ luật. Cùng bàn luận bên tách cà phê...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Footer -->
+    <footer class="bg-trade-darker pt-20 pb-10 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="flex items-center space-x-2 mb-6">
+                        <i class="fa-solid fa-chart-line text-3xl text-trade-accent"></i>
+                        <span class="text-2xl font-bold text-white">AI<span class="text-trade-accent">Trade</span>Master</span>
+                    </a>
+                    <p class="text-slate-400 max-w-sm">
+                        Mang sức mạnh của Trí tuệ nhân tạo đến với nhà đầu tư cá nhân. Tối ưu hóa lợi nhuận, giảm thiểu rủi ro.
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-trade-accent transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-trade-accent transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-trade-accent transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-trade-accent transition-colors"><i class="fa-brands fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6">Sản phẩm</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">AI Signals</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Auto Bot</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Screener</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Bảng giá</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Công ty</h4>
+                    <ul class="space-y-4 text-slate-400">
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Về chúng tôi</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Liên hệ</a></li>
+                        <li><a href="#" class="hover:text-trade-accent transition-colors">Chính sách bảo mật</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-8">
+                <p class="text-xs text-slate-500 text-justify leading-relaxed">
+                    <strong>CẢNH BÁO RỦI RO:</strong> Giao dịch các công cụ tài chính (chứng khoán, forex, crypto) tiềm ẩn rủi ro cao và có thể không phù hợp với tất cả các nhà đầu tư. Bạn có thể mất một phần hoặc toàn bộ số vốn đầu tư ban đầu. Các thuật toán và tín hiệu AI chỉ mang tính chất tham khảo dựa trên dữ liệu quá khứ và không đảm bảo lợi nhuận trong tương lai. Vui lòng cân nhắc kỹ khả năng tài chính và tham khảo ý kiến chuyên gia độc lập trước khi giao dịch.
+                </p>
+                <div class="mt-4 text-center text-slate-600 text-sm">
+                    &copy; 2024 AI Trade Master. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('block');
+            } else {
+                menu.classList.remove('block');
+                menu.classList.add('hidden');
+            }
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Simple Pricing Toggle Logic (Visual only for demo)
+        const btnMonthly = document.getElementById('btn-monthly');
+        const btnYearly = document.getElementById('btn-yearly');
+        
+        btnMonthly.addEventListener('click', () => {
+            btnMonthly.classList.add('bg-trade-accent', 'text-white');
+            btnMonthly.classList.remove('text-slate-400');
+            btnYearly.classList.remove('bg-trade-accent', 'text-white');
+            btnYearly.classList.add('text-slate-400');
+        });
+
+        btnYearly.addEventListener('click', () => {
+            btnYearly.classList.add('bg-trade-accent', 'text-white');
+            btnYearly.classList.remove('text-slate-400');
+            btnMonthly.classList.remove('bg-trade-accent', 'text-white');
+            btnMonthly.classList.add('text-slate-400');
+        });
+    </script>
+</body>
+</html>
