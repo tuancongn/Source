@@ -60,8 +60,31 @@
   transform: translateX(100%);
 }
 
-/* Đảm bảo nút nằm trên cùng */
+/* === Hiệu ứng cho Sliding Toggle === */
+/* Màu chữ mặc định và khi active cho nút */
 #btn-monthly, #btn-yearly {
-  position: relative;
-  z-index: 1;
+    min-width: 6rem;
+}
+#btn-monthly {
+    color: #cbd5e1; /* slate-300 */
+}
+#btn-yearly {
+    color: #cbd5e1; /* slate-300 */
+}
+/* Khi nút được chọn (active) */
+#btn-monthly.active, #btn-yearly.active {
+    color: #ffffff;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* === Hiệu ứng "nảy" cho giá khi thay đổi === */
+@keyframes pricePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.07); }
+    100% { transform: scale(1); }
+}
+.price-changing {
+    animation: pricePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block; /* Cần thiết để animation hoạt động */
 }
