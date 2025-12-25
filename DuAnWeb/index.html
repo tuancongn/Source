@@ -328,12 +328,25 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">Bảng Giá Linh Hoạt</h2>
                 <p class="text-slate-400">Chọn gói phù hợp với phong cách giao dịch của bạn.</p>
                 
-                <!-- Toggle Monthly/Yearly -->
-                <div class="mt-8 inline-flex bg-slate-800 p-1 rounded-full relative border border-slate-700">
-                    <button class="px-6 py-2 rounded-full bg-trade-accent text-white font-medium shadow-sm transition-all" id="btn-monthly">Hàng Tháng</button>
-                    <button class="px-6 py-2 rounded-full text-slate-400 font-medium hover:text-white transition-all" id="btn-yearly">Hàng Năm <span class="text-xs text-trade-accent ml-1 bg-trade-accent/10 px-2 py-0.5 rounded-full">-20%</span></button>
-                </div>
-            </div>
+<!-- Toggle Monthly/Yearly -->
+<div class="mt-8 relative inline-flex items-center justify-center">
+    <div class="relative bg-slate-800/50 p-1 rounded-full border border-slate-700">
+        <!-- Sliding Background Element -->
+        <div id="sliding-bg" class="absolute top-1 left-1 w-[calc(50%-0.25rem)] h-[calc(100%-0.5rem)] bg-gradient-to-r from-trade-accent to-trade-secondary rounded-full shadow-md transition-all duration-400 ease-out"></div>
+        
+        <!-- Buttons -->
+        <button class="relative px-7 py-2.5 rounded-full text-sm font-medium transition-all duration-300 z-10" id="btn-monthly">
+            Hàng Tháng
+        </button>
+        <button class="relative px-7 py-2.5 rounded-full text-sm font-medium transition-all duration-300 z-10" id="btn-yearly">
+            Hàng Năm
+            <!-- Discount Badge - Đã sửa màu để không bị che -->
+            <span id="yearly-badge" class="absolute -top-2 -right-1 text-xs font-bold bg-gradient-to-br from-amber-500 to-amber-300 text-slate-900 px-2 py-0.5 rounded-full shadow-sm border border-amber-400/30">
+                -20%
+            </span>
+        </button>
+    </div>
+</div>
 
             <div class="grid lg:grid-cols-3 gap-8 items-center">
                 
@@ -592,3 +605,4 @@
 
 </body>
 </html>
+
