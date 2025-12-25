@@ -65,87 +65,105 @@ function switchAuthMode() {
     }
 }
 
-// Pricing Toggle Logic - IMPROVED VERSION
+// Pricing Toggle Logic - ENHANCED VERSION with Sliding Effect
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Gather all elements
     const pricingToggles = {
         btnMonthly: document.getElementById('btn-monthly'),
         btnYearly: document.getElementById('btn-yearly'),
+        slidingBg: document.getElementById('sliding-bg'),
         priceStandard: document.getElementById('price-standard'),
         pricePremium: document.getElementById('price-premium'),
-        // Thêm các element cần thay đổi khác vào đây
+        yearlyBadge: document.getElementById('yearly-badge')
     };
 
-    // Kiểm tra tất cả phần tử có tồn tại không
-    const isAllElementsExist = Object.values(pricingToggles).every(el => el !== null);
-    if (!isAllElementsExist) {
-        console.warn('Một hoặc nhiều phần tử pricing không tồn tại. Kiểm tra ID trong HTML.');
+    // 2. Check if all required elements exist
+    if (!Object.values(pricingToggles).every(el => el)) {
+        console.warn('Pricing toggle: Một số phần tử không tìm thấy.');
         return;
     }
 
-    // Trạng thái hiện tại: true = "Hàng Năm", false = "Hàng Tháng"
+    // 3. State
     let isYearlyMode = false;
 
-    // Hàm chính để cập nhật giao diện
+    // 4. Core function to update the UI
     const updatePricingDisplay = () => {
-        // 1. Cập nhật trạng thái nút (mượt mà với transition CSS)
+        // --- A. Update Sliding Background & Button Styles ---
+        const buttonWidth = pricingToggles.btnMonthly.offsetWidth;
         if (isYearlyMode) {
-            pricingToggles.btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            pricingToggles.btnYearly.classList.remove('text-slate-400');
-            
-            pricingToggles.btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            pricingToggles.btnMonthly.classList.add('text-slate-400');
+            // Move background to "Hàng Năm"
+            pricingToggles.slidingBg.style.transform = `translateX(${buttonWidth + 4}px)`; // +4px for gap
+            // Update button classes
+            pricingToggles.btnYearly.classList.add('active');
+            pricingToggles.btnMonthly.classList.remove('active');
+            // Update badge color when active
+            pricingToggles.yearlyBadge.classList.remove('from-amber-500', 'to-amber-300', 'text-slate-900');
+            pricingToggles.yearlyBadge.classList.add('from-slate-100', 'to-slate-300', 'text-slate-900');
         } else {
-            pricingToggles.btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            pricingToggles.btnMonthly.classList.remove('text-slate-400');
-            
-            pricingToggles.btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            pricingToggles.btnYearly.classList.add('text-slate-400');
+            // Move background to "Hàng Tháng"
+            pricingToggles.slidingBg.style.transform = 'translateX(0px)';
+            // Update button classes
+            pricingToggles.btnMonthly.classList.add('active');
+            pricingToggles.btnYearly.classList.remove('active');
+            // Reset badge color
+            pricingToggles.yearlyBadge.classList.add('from-amber-500', 'to-amber-300', 'text-slate-900');
+            pricingToggles.yearlyBadge.classList.remove('from-slate-100', 'to-slate-300');
         }
 
-        // 2. Cập nhật giá với hiệu ứng fade (nếu muốn)
-        const standardPrice = isYearlyMode ? '₫790k' : '₫990k';
-        const premiumPrice = isYearlyMode ? '₫2.0tr' : '₫2.5tr';
-        
-        // Thêm hiệu ứng thay đổi nhẹ
-        if (pricingToggles.priceStandard.textContent !== standardPrice) {
-            pricingToggles.priceStandard.style.opacity = '0.7';
-            pricingToggles.priceStandard.style.transform = 'translateY(2px)';
-            setTimeout(() => {
-                pricingToggles.priceStandard.textContent = standardPrice;
-                pricingToggles.priceStandard.style.opacity = '';
-                pricingToggles.priceStandard.style.transform = '';
-            }, 150);
-        }
-        
-        if (pricingToggles.pricePremium.textContent !== premiumPrice) {
-            pricingToggles.pricePremium.style.opacity = '0.7';
-            pricingToggles.pricePremium.style.transform = 'translateY(2px)';
-            setTimeout(() => {
-                pricingToggles.pricePremium.textContent = premiumPrice;
-                pricingToggles.pricePremium.style.opacity = '';
-                pricingToggles.pricePremium.style.transform = '';
-            }, 150);
-        }
+        // --- B. Update Prices with Enhanced Animation ---
+        const newStandardPrice = isYearlyMode ? '₫790k' : '₫990k';
+        const newPremiumPrice = isYearlyMode ? '₫2.0tr' : '₫2.5tr';
 
-        // 3. (TÙY CHỌN) Cập nhật text nhỏ bên cạnh giá
-        const periodText = isYearlyMode ? '/tháng (thanh toán hàng năm)' : '/tháng';
-        // Nếu có element hiển thị kỳ hạn, cập nhật nó ở đây
+        // Function to animate price change
+        const animatePriceChange = (priceElement, newValue) => {
+            if (priceElement.textContent !== newValue) {
+                // 1. Fade out and slide up slightly
+                priceElement.style.opacity = '0.5';
+                priceElement.style.transform = 'translateY(-6px)';
+                
+                setTimeout(() => {
+                    // 2. Change the text
+                    priceElement.textContent = newValue;
+                    // 3. Apply the pop animation and reset opacity/transform
+                    priceElement.classList.remove('price-changing');
+                    void priceElement.offsetWidth; // Trigger reflow to restart animation
+                    priceElement.classList.add('price-changing');
+                    
+                    priceElement.style.opacity = '';
+                    priceElement.style.transform = '';
+                    
+                    // 4. Remove animation class after it finishes
+                    setTimeout(() => {
+                        priceElement.classList.remove('price-changing');
+                    }, 400);
+                }, 150); // Matches the CSS transition duration
+            }
+        };
+
+        // Apply animation to both prices
+        animatePriceChange(pricingToggles.priceStandard, newStandardPrice);
+        animatePriceChange(pricingToggles.pricePremium, newPremiumPrice);
     };
 
-    // Gắn sự kiện
+    // 5. Attach click events
     pricingToggles.btnMonthly.addEventListener('click', () => {
-        if (!isYearlyMode) return; // Đã ở chế độ tháng, không làm gì
-        isYearlyMode = false;
-        updatePricingDisplay();
+        if (isYearlyMode) {
+            isYearlyMode = false;
+            updatePricingDisplay();
+        }
     });
 
     pricingToggles.btnYearly.addEventListener('click', () => {
-        if (isYearlyMode) return; // Đã ở chế độ năm, không làm gì
-        isYearlyMode = true;
-        updatePricingDisplay();
+        if (!isYearlyMode) {
+            isYearlyMode = true;
+            updatePricingDisplay();
+        }
     });
 
-    // Khởi tạo hiển thị ban đầu
+    // 6. Initialize - Set initial state to Monthly
+    updatePricingDisplay(); // This will set 'Hàng Tháng' as active
+});
     updatePricingDisplay();
 });
+
 
