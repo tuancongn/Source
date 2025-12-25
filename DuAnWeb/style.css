@@ -1,0 +1,36 @@
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+.glass-nav {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #10b981, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
+}
+
+/* Auth Modal Styles */
+.modal-open {
+    overflow: hidden;
+}
