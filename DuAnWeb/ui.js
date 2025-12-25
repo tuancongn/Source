@@ -64,3 +64,41 @@ function switchAuthMode() {
         switchBtn.innerText = "Đăng ký ngay";
     }
 }
+
+// Pricing Toggle Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const btnMonthly = document.getElementById('btn-monthly');
+    const btnYearly = document.getElementById('btn-yearly');
+    const priceStandard = document.getElementById('price-standard');
+    const pricePremium = document.getElementById('price-premium');
+
+    if(btnMonthly && btnYearly) {
+        // Chuyển sang Tháng
+        btnMonthly.addEventListener('click', () => {
+            // Đổi style nút
+            btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
+            btnMonthly.classList.remove('text-slate-400');
+            
+            btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
+            btnYearly.classList.add('text-slate-400');
+
+            // Cập nhật giá
+            if(priceStandard) priceStandard.innerText = '₫990k';
+            if(pricePremium) pricePremium.innerText = '₫2.5tr';
+        });
+
+        // Chuyển sang Năm (Giảm 20%)
+        btnYearly.addEventListener('click', () => {
+            // Đổi style nút
+            btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
+            btnYearly.classList.remove('text-slate-400');
+            
+            btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
+            btnMonthly.classList.add('text-slate-400');
+
+            // Cập nhật giá (Giảm ~20%)
+            if(priceStandard) priceStandard.innerText = '₫790k'; // 990 * 0.8
+            if(pricePremium) pricePremium.innerText = '₫2.0tr'; // 2.5 * 0.8
+        });
+    }
+});
