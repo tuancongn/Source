@@ -1,104 +1,36 @@
-// Mobile Menu Toggle
-function toggleMenu() {
-    const menu = document.getElementById('mobile-menu');
-    if (menu.classList.contains('hidden')) {
-        menu.classList.remove('hidden');
-        menu.classList.add('block');
-    } else {
-        menu.classList.remove('block');
-        menu.classList.add('hidden');
-    }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
 }
 
-// Modal Control
-function openModal() {
-    document.getElementById('auth-modal').classList.remove('hidden');
-    document.body.classList.add('modal-open');
+.glass-nav {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-function closeModal() {
-    document.getElementById('auth-modal').classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    // Reset error messages when closing
-    document.getElementById('auth-error').classList.add('hidden');
+.gradient-text {
+    background: linear-gradient(to right, #10b981, #6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-// Navbar scroll effect
-window.addEventListener('scroll', function() {
-    const nav = document.getElementById('navbar');
-    if (nav) {
-        if (window.scrollY > 50) {
-            nav.classList.add('shadow-lg');
-        } else {
-            nav.classList.remove('shadow-lg');
-        }
-    }
-});
-
-// Toggle between Login and Register in Modal
-let isRegisterMode = false;
-
-function switchAuthMode() {
-    isRegisterMode = !isRegisterMode;
-    const title = document.getElementById('modal-title');
-    const subtitle = document.getElementById('modal-subtitle');
-    const submitBtn = document.getElementById('btn-submit-auth').querySelector('span');
-    const switchText = document.getElementById('switch-text');
-    const switchBtn = document.getElementById('btn-switch-mode');
-    const errorMsg = document.getElementById('auth-error');
-
-    // Hide error when switching
-    errorMsg.classList.add('hidden');
-
-    if (isRegisterMode) {
-        title.innerText = "Tạo Tài Khoản";
-        subtitle.innerText = "Bắt đầu hành trình giao dịch ngay hôm nay";
-        submitBtn.innerText = "Đăng Ký";
-        switchText.innerText = "Đã có tài khoản?";
-        switchBtn.innerText = "Đăng nhập ngay";
-    } else {
-        title.innerText = "Đăng Nhập";
-        subtitle.innerText = "Chào mừng quay trở lại AI Trade Master";
-        submitBtn.innerText = "Đăng Nhập";
-        switchText.innerText = "Chưa có tài khoản?";
-        switchBtn.innerText = "Đăng ký ngay";
-    }
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
 }
 
-// Pricing Toggle Logic
-document.addEventListener('DOMContentLoaded', () => {
-    const btnMonthly = document.getElementById('btn-monthly');
-    const btnYearly = document.getElementById('btn-yearly');
-    const priceStandard = document.getElementById('price-standard');
-    const pricePremium = document.getElementById('price-premium');
-
-    if(btnMonthly && btnYearly) {
-        // Chuyển sang Tháng
-        btnMonthly.addEventListener('click', () => {
-            // Đổi style nút
-            btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnMonthly.classList.remove('text-slate-400');
-            
-            btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnYearly.classList.add('text-slate-400');
-
-            // Cập nhật giá
-            if(priceStandard) priceStandard.innerText = '₫990k';
-            if(pricePremium) pricePremium.innerText = '₫2.5tr';
-        });
-
-        // Chuyển sang Năm (Giảm 20%)
-        btnYearly.addEventListener('click', () => {
-            // Đổi style nút
-            btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnYearly.classList.remove('text-slate-400');
-            
-            btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnMonthly.classList.add('text-slate-400');
-
-            // Cập nhật giá (Giảm ~20%)
-            if(priceStandard) priceStandard.innerText = '₫790k'; // 990 * 0.8
-            if(pricePremium) pricePremium.innerText = '₫2.0tr'; // 2.5 * 0.8
-        });
-    }
-});
+/* Auth Modal Styles */
+.modal-open {
+    overflow: hidden;
+}
