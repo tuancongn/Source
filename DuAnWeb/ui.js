@@ -68,39 +68,78 @@ function switchAuthMode() {
 
 // --- FIX: PRICING TOGGLE LOGIC ---
 // Đoạn code này sẽ chạy khi trang web tải xong
+// --- FIXED: PRICING TOGGLE LOGIC ---
 document.addEventListener('DOMContentLoaded', () => {
     const btnMonthly = document.getElementById('btn-monthly');
     const btnYearly = document.getElementById('btn-yearly');
     const priceStandard = document.getElementById('price-standard');
     const pricePremium = document.getElementById('price-premium');
+    const priceStandardUnit = priceStandard ? priceStandard.nextElementSibling : null;
+    const pricePremiumUnit = pricePremium ? pricePremium.nextElementSibling : null;
 
-    if(btnMonthly && btnYearly) {
-        // Sự kiện: Chọn Hàng Tháng
-        btnMonthly.addEventListener('click', () => {
-            // Đổi màu nút
-            btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnMonthly.classList.remove('text-slate-400');
-            
-            btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnYearly.classList.add('text-slate-400');
-
-            // Cập nhật giá về gốc
-            if(priceStandard) priceStandard.innerText = '₫990k';
-            if(pricePremium) pricePremium.innerText = '₫2.5tr';
-        });
-
-        // Sự kiện: Chọn Hàng Năm (Giảm giá)
-        btnYearly.addEventListener('click', () => {
-            // Đổi màu nút
-            btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnYearly.classList.remove('text-slate-400');
-            
-            btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-            btnMonthly.classList.add('text-slate-400');
-
-            // Cập nhật giá (Giảm ~20%)
-            if(priceStandard) priceStandard.innerText = '₫790k'; 
-            if(pricePremium) pricePremium.innerText = '₫2.0tr'; 
-        });
+    // Kiểm tra đầy đủ tất cả các element cần thiết
+    if (!btnMonthly || !btnYearly || !priceStandard || !pricePremium || !priceStandardUnit || !pricePremiumUnit) {
+        console.warn('Missing pricing elements in DOM');
+        return;
     }
+
+    // Hàm cập nhật giao diện Monthly
+    function setMonthlyPricing() {
+        // Cập nhật button active state
+        btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
+        btnMonthly.classList.remove('text-slate-400');
+        
+        btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
+        btnYearly.classList.add('text-slate-400');
+
+        // Cập nhật giá
+        priceStandard.innerText = '₫990k';
+        pricePremium.innerText = '₫2.5tr';
+        
+        // Cập nhật đơn vị thời gian
+        priceStandardUnit.innerText = '/tháng';
+        priceStandardUnit.classList.remove('text-trade-accent');
+        priceStandardUnit.classList.add('text-slate-500');
+        
+        pricePremiumUnit.innerText = '/tháng';
+        pricePremiumUnit.classList.remove('text-trade-accent');
+        pricePremiumUnit.classList.add('text-slate-400');
+    }
+
+    // Hàm cập nhật giao diện Yearly
+    function setYearlyPricing() {
+        // Cập nhật button active state
+        btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
+        btnYearly.classList.remove('text-slate-400');
+        
+        btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
+        btnMonthly.classList.add('text-slate-400');
+
+        // Cập nhật giá (giảm 20%)
+        priceStandard.innerText = '₫790k';
+        pricePremium.innerText = '₫2.0tr';
+        
+        // Cập nhật đơn vị thời gian và màu sắc
+        priceStandardUnit.innerText = '/năm';
+        priceStandardUnit.classList.remove('text-slate-500');
+        priceStandardUnit.classList.add('text-trade-accent');
+        
+        pricePremiumUnit.innerText = '/năm';
+        pricePremiumUnit.classList.remove('text-slate-400');
+        pricePremiumUnit.classList.add('text-trade-accent');
+    }
+
+    // Gắn sự kiện click
+    btnMonthly.addEventListener('click', (e) => {
+        e.preventDefault();
+        setMonthlyPricing();
+    });
+
+    btnYearly.addEventListener('click', (e) => {
+        e.preventDefault();
+        setYearlyPricing();
+    });
+
+    // Thiết lập trạng thái ban đầu (Monthly)
+    setMonthlyPricing();
 });
