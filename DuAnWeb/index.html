@@ -72,12 +72,12 @@
                         <!-- Auth Buttons Container -->
                         <div id="auth-container" class="flex items-center space-x-4">
                             <!-- Show when NOT logged in -->
-                            <button id="btn-login-nav" onclick="openModal()" class="text-white hover:text-trade-accent font-medium px-3 py-2 text-sm border border-transparent hover:border-trade-accent/50 rounded-lg transition-all">
+                            <button id="btn-login-nav" onclick="openModal('login')" class="text-white hover:text-trade-accent font-medium px-3 py-2 text-sm border border-transparent hover:border-trade-accent/50 rounded-lg transition-all">
                                 Đăng nhập
                             </button>
-                            <a href="#contact" class="bg-trade-accent hover:bg-trade-accentHover text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-lg shadow-trade-accent/30 flex items-center">
+                            <button onclick="openModal('register')" class="bg-trade-accent hover:bg-trade-accentHover text-white px-5 py-2 rounded-full text-sm font-bold transition-all transform hover:scale-105 shadow-lg shadow-trade-accent/30 flex items-center">
                                 Dùng thử miễn phí <i class="fa-solid fa-rocket ml-2"></i>
-                            </a>
+                            </button>
                         </div>
 
                         <!-- Show when LOGGED IN (Hidden by default) -->
@@ -119,7 +119,7 @@
                 <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Tính năng</a>
                 <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800">Bảng giá</a>
                 <div id="mobile-auth-section">
-                    <button onclick="openModal()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800 text-trade-accent">Đăng nhập</button>
+                    <button onclick="openModal('login')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium hover:text-white hover:bg-gray-800 text-trade-accent">Đăng nhập</button>
                 </div>
                 <div id="mobile-user-section" class="hidden border-t border-slate-700 mt-2 pt-2">
                     <div class="px-3 py-2 text-sm text-slate-400">Xin chào, <span id="mobile-user-email" class="text-white font-bold">User</span></div>
@@ -340,7 +340,7 @@
                     <div class="my-6">
                         <span id="price-standard" class="text-4xl font-bold text-white">₫990k</span><span class="text-slate-500">/tháng</span>
                     </div>
-                    <a href="#contact" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600 mb-8">Bắt đầu ngay</a>
+                    <button onclick="openModal('register')" class="block w-full py-3 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-center rounded-lg transition-colors border border-slate-600 mb-8">Bắt đầu ngay</button>
                     <ul class="space-y-4 text-sm text-slate-300 flex-grow">
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3 w-5"></i> 10 Tín hiệu AI/ngày</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-3 w-5"></i> Biểu đồ cơ bản</li>
@@ -358,7 +358,7 @@
                     <div class="my-6">
                         <span id="price-premium" class="text-5xl font-bold text-white">₫2.5tr</span><span class="text-slate-400">/tháng</span>
                     </div>
-                    <button onclick="openModal()" class="block w-full py-4 px-4 bg-trade-accent hover:bg-trade-accentHover text-white font-bold text-center rounded-lg transition-colors shadow-lg hover:shadow-trade-accent/50 mb-8">Dùng thử 7 ngày</button>
+                    <button onclick="openModal('register')" class="block w-full py-4 px-4 bg-trade-accent hover:bg-trade-accentHover text-white font-bold text-center rounded-lg transition-colors shadow-lg hover:shadow-trade-accent/50 mb-8">Dùng thử 7 ngày</button>
                     <ul class="space-y-4 text-sm text-white flex-grow">
                         <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3 w-5"></i> <strong>Không giới hạn</strong> tín hiệu</li>
                         <li class="flex items-center"><i class="fa-solid fa-check text-trade-accent mr-3 w-5"></i> Truy cập AI Holly (Bot)</li>
