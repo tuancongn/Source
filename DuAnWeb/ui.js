@@ -66,80 +66,169 @@ function switchAuthMode() {
     }
 }
 
-// --- FIX: PRICING TOGGLE LOGIC ---
-// Đoạn code này sẽ chạy khi trang web tải xong
-// --- FIXED: PRICING TOGGLE LOGIC ---
+// --- ENHANCED PRICING TOGGLE WITH ANIMATIONS ---
 document.addEventListener('DOMContentLoaded', () => {
     const btnMonthly = document.getElementById('btn-monthly');
     const btnYearly = document.getElementById('btn-yearly');
+    const pricingIndicator = document.getElementById('pricing-indicator');
+    const discountBadge = document.getElementById('discount-badge');
     const priceStandard = document.getElementById('price-standard');
     const pricePremium = document.getElementById('price-premium');
-    const priceStandardUnit = priceStandard ? priceStandard.nextElementSibling : null;
-    const pricePremiumUnit = pricePremium ? pricePremium.nextElementSibling : null;
+    const priceStandardUnit = document.querySelector('#price-standard + span');
+    const pricePremiumUnit = document.querySelector('#price-premium + span');
 
-    // Kiểm tra đầy đủ tất cả các element cần thiết
-    if (!btnMonthly || !btnYearly || !priceStandard || !pricePremium || !priceStandardUnit || !pricePremiumUnit) {
-        console.warn('Missing pricing elements in DOM');
+    if (!btnMonthly || !btnYearly || !pricingIndicator || !priceStandard || !pricePremium) {
+        console.warn('Missing pricing elements');
         return;
     }
 
-    // Hàm cập nhật giao diện Monthly
+    // Create glow effect element
+    function createGlowEffect(element) {
+        const glow = document.createElement('div');
+        glow.className = 'pricing-toggle-glow';
+        element.appendChild(glow);
+        return glow;
+    }
+
+    const monthlyGlow = createGlowEffect(btnMonthly);
+    const yearlyGlow = createGlowEffect(btnYearly);
+
+    // Animation helper function
+    function animateElement(element, animationClass, duration = 300) {
+        element.classList.add(animationClass);
+        setTimeout(() => {
+            element.classList.remove(animationClass);
+        }, duration);
+    }
+
+    // Update price display with animation
+    function updatePriceWithAnimation(element, newValue) {
+        element.classList.add('price-change');
+        setTimeout(() => {
+            element.innerText = newValue;
+            setTimeout(() => {
+                element.classList.remove('price-change');
+            }, 100);
+        }, 150);
+    }
+
+    // Update unit text with animation
+    function updateUnitWithAnimation(element, newUnit) {
+        element.classList.add('unit-highlight');
+        setTimeout(() => {
+            element.innerText = newUnit;
+            setTimeout(() => {
+                element.classList.remove('unit-highlight');
+            }, 300);
+        }, 150);
+    }
+
+    // Set monthly pricing with animations
     function setMonthlyPricing() {
-        // Cập nhật button active state
-        btnMonthly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-        btnMonthly.classList.remove('text-slate-400');
+        // Move indicator to monthly
+        pricingIndicator.style.transform = 'translateX(0)';
         
-        btnYearly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-        btnYearly.classList.add('text-slate-400');
-
-        // Cập nhật giá
-        priceStandard.innerText = '₫990k';
-        pricePremium.innerText = '₫2.5tr';
+        // Glow effect
+        monthlyGlow.classList.add('button-glow-active');
+        yearlyGlow.classList.remove('button-glow-active');
         
-        // Cập nhật đơn vị thời gian
-        priceStandardUnit.innerText = '/tháng';
-        priceStandardUnit.classList.remove('text-trade-accent');
-        priceStandardUnit.classList.add('text-slate-500');
+        // Update button text colors
+        btnMonthly.querySelector('span').style.color = 'white';
+        btnYearly.querySelector('span').style.color = '#94a3b8';
         
-        pricePremiumUnit.innerText = '/tháng';
-        pricePremiumUnit.classList.remove('text-trade-accent');
-        pricePremiumUnit.classList.add('text-slate-400');
+        // Update discount badge visibility
+        if (discountBadge) {
+            discountBadge.style.opacity = '0.7';
+            discountBadge.style.color = '#10b981';
+            discountBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.2)';
+        }
+        
+        // Animate price changes
+        updatePriceWithAnimation(priceStandard, '₫990k');
+        updatePriceWithAnimation(pricePremium, '₫2.5tr');
+        
+        // Update unit text
+        if (priceStandardUnit) updateUnitWithAnimation(priceStandardUnit, '/tháng');
+        if (pricePremiumUnit) updateUnitWithAnimation(pricePremiumUnit, '/tháng');
+        
+        // Reset unit colors
+        if (priceStandardUnit) priceStandardUnit.classList.remove('text-trade-accent');
+        if (pricePremiumUnit) pricePremiumUnit.classList.remove('text-trade-accent');
     }
 
-    // Hàm cập nhật giao diện Yearly
+    // Set yearly pricing with animations
     function setYearlyPricing() {
-        // Cập nhật button active state
-        btnYearly.classList.add('bg-trade-accent', 'text-white', 'shadow-sm');
-        btnYearly.classList.remove('text-slate-400');
+        // Move indicator to yearly
+        pricingIndicator.style.transform = 'translateX(100%)';
         
-        btnMonthly.classList.remove('bg-trade-accent', 'text-white', 'shadow-sm');
-        btnMonthly.classList.add('text-slate-400');
-
-        // Cập nhật giá (giảm 20%)
-        priceStandard.innerText = '₫790k';
-        pricePremium.innerText = '₫2.0tr';
+        // Glow effect
+        yearlyGlow.classList.add('button-glow-active');
+        monthlyGlow.classList.remove('button-glow-active');
         
-        // Cập nhật đơn vị thời gian và màu sắc
-        priceStandardUnit.innerText = '/năm';
-        priceStandardUnit.classList.remove('text-slate-500');
-        priceStandardUnit.classList.add('text-trade-accent');
+        // Update button text colors
+        btnMonthly.querySelector('span').style.color = '#94a3b8';
+        btnYearly.querySelector('span').style.color = 'white';
         
-        pricePremiumUnit.innerText = '/năm';
-        pricePremiumUnit.classList.remove('text-slate-400');
-        pricePremiumUnit.classList.add('text-trade-accent');
+        // Update discount badge for better visibility
+        if (discountBadge) {
+            discountBadge.style.opacity = '1';
+            discountBadge.style.color = 'white';
+            discountBadge.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+            discountBadge.style.boxShadow = '0 0 8px rgba(255, 255, 255, 0.3)';
+        }
+        
+        // Animate price changes
+        updatePriceWithAnimation(priceStandard, '₫790k');
+        updatePriceWithAnimation(pricePremium, '₫2.0tr');
+        
+        // Update unit text
+        if (priceStandardUnit) updateUnitWithAnimation(priceStandardUnit, '/năm');
+        if (pricePremiumUnit) updateUnitWithAnimation(pricePremiumUnit, '/năm');
+        
+        // Highlight unit text
+        if (priceStandardUnit) priceStandardUnit.classList.add('text-trade-accent');
+        if (pricePremiumUnit) pricePremiumUnit.classList.add('text-trade-accent');
     }
 
-    // Gắn sự kiện click
+    // Event listeners with smooth animations
     btnMonthly.addEventListener('click', (e) => {
         e.preventDefault();
         setMonthlyPricing();
+        animateElement(btnMonthly, 'scale-105', 200);
     });
 
     btnYearly.addEventListener('click', (e) => {
         e.preventDefault();
         setYearlyPricing();
+        animateElement(btnYearly, 'scale-105', 200);
     });
 
-    // Thiết lập trạng thái ban đầu (Monthly)
+    // Initial state (Monthly)
     setMonthlyPricing();
+
+    // Add hover effects for better interactivity
+    btnMonthly.addEventListener('mouseenter', () => {
+        if (!btnMonthly.classList.contains('active')) {
+            monthlyGlow.classList.add('button-glow-active');
+        }
+    });
+
+    btnMonthly.addEventListener('mouseleave', () => {
+        if (!btnMonthly.classList.contains('active')) {
+            monthlyGlow.classList.remove('button-glow-active');
+        }
+    });
+
+    btnYearly.addEventListener('mouseenter', () => {
+        if (!btnYearly.classList.contains('active')) {
+            yearlyGlow.classList.add('button-glow-active');
+        }
+    });
+
+    btnYearly.addEventListener('mouseleave', () => {
+        if (!btnYearly.classList.contains('active')) {
+            yearlyGlow.classList.remove('button-glow-active');
+        }
+    });
 });
+
