@@ -155,7 +155,7 @@
                         <a href="#pricing" class="px-8 py-4 bg-trade-accent hover:bg-trade-accentHover text-white rounded-lg font-bold text-lg shadow-lg shadow-trade-accent/40 transition-all transform hover:-translate-y-1 flex items-center justify-center group">
                             Xem Bảng Giá <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                         </a>
-                        <button onclick="alert('Tính năng Demo đang được cập nhật!')" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg font-bold text-lg transition-all flex items-center justify-center group">
+                        <button onclick="document.querySelector('video').play(); document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'});" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg font-bold text-lg transition-all flex items-center justify-center group">
                             <i class="fa-solid fa-play mr-2 text-trade-secondary group-hover:text-white transition-colors"></i> Xem Demo
                         </button>
                     </div>
@@ -216,7 +216,7 @@
         </div>
     </section>
 
-    <!-- How It Works Section -->
+    <!-- How It Works Section (UPDATED WITH VIDEO) -->
     <section id="how-it-works" class="py-20 bg-trade-dark border-t border-slate-800 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -225,17 +225,13 @@
             </div>
             
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <!-- Video/Demo Placeholder -->
-                <div class="bg-slate-800 rounded-2xl aspect-video flex items-center justify-center relative group cursor-pointer overflow-hidden border border-slate-700 shadow-xl hover:shadow-trade-accent/20 transition-all">
-                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all"></div>
-                    <img src="https://images.unsplash.com/photo-1611974765270-ca1258634369?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Demo Thumbnail" class="absolute inset-0 w-full h-full object-cover -z-10 opacity-50 grayscale group-hover:grayscale-0 transition-all duration-500">
-                    <div class="w-20 h-20 bg-trade-accent/90 rounded-full flex items-center justify-center z-10 shadow-lg group-hover:scale-110 transition-transform backdrop-blur-sm">
-                        <i class="fa-solid fa-play text-white text-2xl pl-1"></i>
-                    </div>
-                    <div class="absolute bottom-4 left-4 text-white z-10">
-                        <p class="font-bold text-lg">Xem Demo Hệ Thống</p>
-                        <p class="text-xs text-slate-300">Thời lượng: 2:30</p>
-                    </div>
+                <!-- Video Player Container -->
+                <div class="bg-slate-800 rounded-2xl aspect-video relative group overflow-hidden border border-slate-700 shadow-xl hover:shadow-trade-accent/20 transition-all">
+                    <!-- Sử dụng thẻ Video của HTML5 -->
+                    <video controls class="w-full h-full object-cover rounded-2xl">
+                        <source src="Video_Huong_Dan.mp4" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ thẻ video.
+                    </video>
                 </div>
 
                 <!-- Steps -->
